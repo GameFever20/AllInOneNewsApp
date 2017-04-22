@@ -20,16 +20,12 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
-import utils.DatabaseHandlerFirebase;
 import utils.NewsInfo;
-import utils.ZoomOutPageTransformer;
 
 public class NewsListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ViewPager mPager;
-    private PagerAdapter mPagerAdapter;
-    ArrayList<NewsInfo> newsInfoArrayList = new ArrayList<>();
+     ArrayList<NewsInfo> newsInfoArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,20 +53,10 @@ public class NewsListActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         initiaizeNewsInfoArrayList();
-        initializeViewPager();
-
-    }
-
-    private void initializeViewPager() {
-
-// Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.content_news_list_view_pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
-        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
 
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -129,24 +115,6 @@ public class NewsListActivity extends AppCompatActivity
         return true;
     }
 
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // return NewsArticleViewFragment.newInstance("New", newsArrayList.get(position));
-            return NewsListFragment.newInstance("newsInfo", newsInfoArrayList.get(position));
-
-        }
-
-        @Override
-        public int getCount() {
-            //return newsArrayList.size();
-            return newsInfoArrayList.size();
-        }
-    }
 
     public void initiaizeNewsInfoArrayList() {
         for(int i=0 ;i<10 ; i++) {
