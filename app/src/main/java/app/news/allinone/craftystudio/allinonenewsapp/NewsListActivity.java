@@ -3,6 +3,11 @@ package app.news.allinone.craftystudio.allinonenewsapp;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +18,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
+import utils.DatabaseHandlerFirebase;
+import utils.NewsInfo;
+import utils.ZoomOutPageTransformer;
+
 public class NewsListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ViewPager mPager;
+    private PagerAdapter mPagerAdapter;
+    ArrayList<NewsInfo> newsInfoArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +55,21 @@ public class NewsListActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        initiaizeNewsInfoArrayList();
+        initializeViewPager();
+
+    }
+
+    private void initializeViewPager() {
+
+// Instantiate a ViewPager and a PagerAdapter.
+        mPager = (ViewPager) findViewById(R.id.content_news_list_view_pager);
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+
+
     }
 
     @Override
@@ -98,4 +128,61 @@ public class NewsListActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // return NewsArticleViewFragment.newInstance("New", newsArrayList.get(position));
+            return NewsListFragment.newInstance("newsInfo", newsInfoArrayList.get(position));
+
+        }
+
+        @Override
+        public int getCount() {
+            //return newsArrayList.size();
+            return newsInfoArrayList.size();
+        }
+    }
+
+    public void initiaizeNewsInfoArrayList() {
+        for(int i=0 ;i<10 ; i++) {
+            NewsInfo newsInfo = new NewsInfo();
+            newsInfo.setNewsDate("20/04/2017");
+            newsInfo.setNewsCategory("Technology");
+            newsInfo.setNewsHeadline("Heading text nothing to add so just dummy line here and there to test");
+            newsInfo.setNewsSummary("hjbjdsa bcdsj cjhewhjbc b eh c hj ch c c jh  c  c whj c  c j ejc ec dsj c  eh  h jh h h h jh hg g dsagj ug cud sagj cwga f bdsa bh edvheb vakh kae veg vuer fcuwe fuc uew vugu  dvahwe agf agf agkg faj fgegagfha fgaf gah ahh f fahj ha ");
+            newsInfoArrayList.add(newsInfo);
+        }
+
+
+       /* DatabaseHandlerFirebase databaseHandlerFirebase = new DatabaseHandlerFirebase();
+        databaseHandlerFirebase.getNewsList(10);
+        databaseHandlerFirebase.addNewsListListner(new DatabaseHandlerFirebase.DataBaseHandlerNewsListListner() {
+            @Override
+            public void onNewsList(ArrayList<NewsInfo> newsInfoArrayList) {
+
+                for (int i =newsInfoArrayList.size() ; i>0 ; i--){
+                    NewsListActivity.this.newsInfoArrayList.add(newsInfoArrayList.get(i));
+                }
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onNoticePost(boolean isSuccessful) {
+
+            }
+        });*/
+
+
+    }
+
 }
