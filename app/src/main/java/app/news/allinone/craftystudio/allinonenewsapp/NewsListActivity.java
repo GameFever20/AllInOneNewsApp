@@ -8,6 +8,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,15 +21,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import utils.ClickListener;
 import utils.NewsInfo;
+import utils.NewsListRecyclerAdapter;
+import utils.NewsMetaInfo;
+import utils.RecyclerTouchListener;
 
 public class NewsListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-     ArrayList<NewsInfo> newsInfoArrayList = new ArrayList<>();
+    ArrayList<NewsMetaInfo> newsMetaInfoArrayList = new ArrayList<>();
+    RecyclerView recyclerView ;
+    NewsListRecyclerAdapter newsListRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +51,7 @@ public class NewsListActivity extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
             }
         });
 
@@ -53,8 +65,32 @@ public class NewsListActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         initiaizeNewsInfoArrayList();
+        initializeRecyclerView();
 
 
+    }
+
+    private void initializeRecyclerView() {
+        recyclerView = (RecyclerView)findViewById(R.id.content_news_list_recyclerView);
+        newsListRecyclerAdapter= new NewsListRecyclerAdapter(newsMetaInfoArrayList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
+        recyclerView.setAdapter(newsListRecyclerAdapter);
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Toast.makeText(NewsListActivity.this, "Item clicked "+position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
 
@@ -117,13 +153,12 @@ public class NewsListActivity extends AppCompatActivity
 
 
     public void initiaizeNewsInfoArrayList() {
-        for(int i=0 ;i<10 ; i++) {
-            NewsInfo newsInfo = new NewsInfo();
-            newsInfo.setNewsDate("20/04/2017");
-            newsInfo.setNewsCategory("Technology");
-            newsInfo.setNewsHeadline("Heading text nothing to add so just dummy line here and there to test");
-            newsInfo.setNewsSummary("hjbjdsa bcdsj cjhewhjbc b eh c hj ch c c jh  c  c whj c  c j ejc ec dsj c  eh  h jh h h h jh hg g dsagj ug cud sagj cwga f bdsa bh edvheb vakh kae veg vuer fcuwe fuc uew vugu  dvahwe agf agf agkg faj fgegagfha fgaf gah ahh f fahj ha ");
-            newsInfoArrayList.add(newsInfo);
+        for (int i = 0; i < 10; i++) {
+            NewsMetaInfo newsMetaInfo = new NewsMetaInfo();
+            newsMetaInfo.setNewsDate("20/04/2017");
+            newsMetaInfo.setNewsSource("Technology");
+            newsMetaInfo.setNewsHeading("Heading text nothing to add so just dummy line here and there to test "+i);
+            newsMetaInfoArrayList.add(newsMetaInfo);
         }
 
 

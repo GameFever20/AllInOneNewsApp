@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="200dp"
+        android:id="@+id/newslist_row_imageView"
+        android:src="@mipmap/ic_launcher"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="heading"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:id="@+id/newslist_row_heading_textView"
+        android:textColor="@color/headingColor"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/newslist_row_date_textView"
+            android:layout_height="wrap_content"
+            android:text="20/03/17"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+        </View>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/newslist_row_category_textView"
+            android:layout_height="wrap_content"
+            android:text="Technology"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
