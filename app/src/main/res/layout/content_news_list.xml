@@ -10,12 +10,13 @@
     tools:context="app.news.allinone.craftystudio.allinonenewsapp.NewsListActivity"
     tools:showIn="@layout/app_bar_news_list">
 
-    <android.support.v4.view.ViewPager
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/content_news_list_view_pager"
+        android:id="@+id/content_news_list_recyclerView"
+
         >
 
-    </android.support.v4.view.ViewPager>
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
