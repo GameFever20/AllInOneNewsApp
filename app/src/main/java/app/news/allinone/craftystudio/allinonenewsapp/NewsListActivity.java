@@ -85,6 +85,8 @@ public class NewsListActivity extends AppCompatActivity
             @Override
             public void onClick(View view, int position) {
                 Toast.makeText(NewsListActivity.this, "Item clicked "+position, Toast.LENGTH_SHORT).show();
+                DatabaseHandlerFirebase databaseHandlerFirebase = new DatabaseHandlerFirebase();
+                databaseHandlerFirebase.getNewsInfo(newsMetaInfoArrayList.get(position).getNewsPushKeyId());
             }
 
             @Override

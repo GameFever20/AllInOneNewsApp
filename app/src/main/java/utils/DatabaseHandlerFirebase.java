@@ -3,6 +3,7 @@ package utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,7 +48,7 @@ public class DatabaseHandlerFirebase {
 
         DatabaseReference myRef = mDatabase.child("NewsMetaInfo");
 
-        Query myref2 = myRef.limitToLast(limit);
+        Query myref2 = myRef.limitToFirst(limit);
 
         myref2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -65,6 +66,38 @@ public class DatabaseHandlerFirebase {
 
                 if (databaseNewsListListner != null) {
                     databaseNewsListListner.onNewsList(newsMetaInfoArrayList);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                if (databaseNewsListListner != null) {
+                    databaseNewsListListner.onCancel();
+                }
+
+            }
+        });
+
+
+    }
+
+
+    public void getNewsInfo(String pushKeyId) {
+
+        DatabaseReference myRef = mDatabase.child("NewsInfo/"+pushKeyId);
+
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                NewsInfo newsInfo = dataSnapshot.getValue(NewsInfo.class);
+                Log.d("Db handler", "onDataChange: "+newsInfo);
+
+                if (databaseNewsListListner != null) {
+
                 }
 
             }
