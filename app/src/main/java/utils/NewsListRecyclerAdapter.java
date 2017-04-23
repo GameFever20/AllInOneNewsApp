@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,12 +22,15 @@ public class NewsListRecyclerAdapter extends RecyclerView.Adapter<NewsListRecycl
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView newsHeadingTextView, newsDateTextView, newsCategoryTextView;
+        public ImageView newsImageView;
 
         public MyViewHolder(View view) {
             super(view);
             newsHeadingTextView = (TextView) view.findViewById(R.id.newslist_row_heading_textView);
             newsDateTextView = (TextView) view.findViewById(R.id.newslist_row_date_textView);
             newsCategoryTextView = (TextView) view.findViewById(R.id.newslist_row_category_textView);
+            newsImageView = (ImageView)view.findViewById(R.id.newslist_row_imageView);
+
         }
     }
 
@@ -50,6 +54,7 @@ public class NewsListRecyclerAdapter extends RecyclerView.Adapter<NewsListRecycl
         holder.newsHeadingTextView.setText(newsMetaInfo.getNewsHeading());
         holder.newsDateTextView.setText(newsMetaInfo.getNewsDate());
         holder.newsCategoryTextView.setText(newsMetaInfo.getNewsSource());
+        holder.newsImageView.setImageBitmap(newsMetaInfo.getNewsImage());
     }
 
     @Override

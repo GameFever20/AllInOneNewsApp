@@ -9,9 +9,12 @@ import android.graphics.Bitmap;
 public class NewsMetaInfo {
     String newsHeading;
     String newsDate;
-    String newsImageLink;
+    String newsPushKeyId;
     Bitmap newsImage;
     String newsSource ;
+
+    public NewsMetaInfo() {
+    }
 
 
     public String getNewsSource() {
@@ -22,8 +25,6 @@ public class NewsMetaInfo {
         this.newsSource = newsSource;
     }
 
-    public NewsMetaInfo() {
-    }
 
     public String getNewsHeading() {
         return newsHeading;
@@ -41,12 +42,12 @@ public class NewsMetaInfo {
         this.newsDate = newsDate;
     }
 
-    public String getNewsImageLink() {
-        return newsImageLink;
+    public String getNewsPushKeyId() {
+        return newsPushKeyId;
     }
 
-    public void setNewsImageLink(String newsImageLink) {
-        this.newsImageLink = newsImageLink;
+    public void setNewsPushKeyId(String newsPushKeyId) {
+        this.newsPushKeyId = newsPushKeyId;
     }
 
     public Bitmap getNewsImage() {

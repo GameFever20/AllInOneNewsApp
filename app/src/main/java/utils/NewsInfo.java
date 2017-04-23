@@ -14,16 +14,16 @@ import java.util.List;
 
 public class NewsInfo implements Parcelable {
 
-    String newsHeadline;
-    String newsSummary;
-    String newsSource;
-    String newsCategory;
-    String newsDate;
-    String newsTime;
-    String newsNotify;
-    String newsImageLink;
-    Bitmap newsImage;
-    HashMap<String , NewsSourceList> newsSourceListHashMap;
+    private String newsHeadline;
+    private String newsSummary;
+    private String newsSource;
+    private String newsCategory;
+    private String newsDate;
+    private String newsTime;
+    private String newsNotify;
+    private String newsImageLink;
+    private Bitmap newsImage;
+    private HashMap<String , NewsSourceList> newsSourceListHashMap;
 
     public ArrayList<NewsSourceList> getNewsSourceListArrayList() {
         return newsSourceListArrayList;
@@ -179,39 +179,6 @@ public class NewsInfo implements Parcelable {
     };
 
 
-    public class NewsSourceList {
-        String newsListSource;
-        String newsListHeading;
-        String newsListLink;
-
-
-        public NewsSourceList() {
-        }
-
-        public String getNewsListSource() {
-            return newsListSource;
-        }
-
-        public void setNewsListSource(String newsListSource) {
-            this.newsListSource = newsListSource;
-        }
-
-        public String getNewsListHeading() {
-            return newsListHeading;
-        }
-
-        public void setNewsListHeading(String newsListHeading) {
-            this.newsListHeading = newsListHeading;
-        }
-
-        public String getNewsListLink() {
-            return newsListLink;
-        }
-
-        public void setNewsListLink(String newsListLink) {
-            this.newsListLink = newsListLink;
-        }
-    }
-
 
 }
+

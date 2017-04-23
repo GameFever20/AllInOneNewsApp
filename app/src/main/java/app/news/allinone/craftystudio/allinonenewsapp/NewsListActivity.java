@@ -26,6 +26,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import utils.ClickListener;
+import utils.DatabaseHandlerFirebase;
 import utils.NewsInfo;
 import utils.NewsListRecyclerAdapter;
 import utils.NewsMetaInfo;
@@ -153,24 +154,25 @@ public class NewsListActivity extends AppCompatActivity
 
 
     public void initiaizeNewsInfoArrayList() {
-        for (int i = 0; i < 10; i++) {
+       /* for (int i = 0; i < 10; i++) {
             NewsMetaInfo newsMetaInfo = new NewsMetaInfo();
             newsMetaInfo.setNewsDate("20/04/2017");
             newsMetaInfo.setNewsSource("Technology");
             newsMetaInfo.setNewsHeading("Heading text nothing to add so just dummy line here and there to test "+i);
             newsMetaInfoArrayList.add(newsMetaInfo);
         }
+*/
 
-
-       /* DatabaseHandlerFirebase databaseHandlerFirebase = new DatabaseHandlerFirebase();
+        DatabaseHandlerFirebase databaseHandlerFirebase = new DatabaseHandlerFirebase();
         databaseHandlerFirebase.getNewsList(10);
         databaseHandlerFirebase.addNewsListListner(new DatabaseHandlerFirebase.DataBaseHandlerNewsListListner() {
             @Override
-            public void onNewsList(ArrayList<NewsInfo> newsInfoArrayList) {
+            public void onNewsList(ArrayList<NewsMetaInfo> newsMetaInfoArrayList) {
 
-                for (int i =newsInfoArrayList.size() ; i>0 ; i--){
-                    NewsListActivity.this.newsInfoArrayList.add(newsInfoArrayList.get(i));
+                for (int i =newsMetaInfoArrayList.size()-1 ; i>=0 ; i--){
+                    NewsListActivity.this.newsMetaInfoArrayList.add(newsMetaInfoArrayList.get(i));
                 }
+                newsListRecyclerAdapter.notifyDataSetChanged();
 
             }
 
@@ -183,7 +185,12 @@ public class NewsListActivity extends AppCompatActivity
             public void onNoticePost(boolean isSuccessful) {
 
             }
-        });*/
+
+            @Override
+            public void onNewsImageFetched(boolean isFetchedImage) {
+                newsListRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
 
 
     }
