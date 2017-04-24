@@ -1,5 +1,6 @@
 package app.news.allinone.craftystudio.allinonenewsapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -85,8 +86,7 @@ public class NewsListActivity extends AppCompatActivity
             @Override
             public void onClick(View view, int position) {
                 Toast.makeText(NewsListActivity.this, "Item clicked "+position, Toast.LENGTH_SHORT).show();
-                DatabaseHandlerFirebase databaseHandlerFirebase = new DatabaseHandlerFirebase();
-                databaseHandlerFirebase.getNewsInfo(newsMetaInfoArrayList.get(position).getNewsPushKeyId());
+                openNewsFeedActivity(newsMetaInfoArrayList.get(position));
             }
 
             @Override
@@ -94,6 +94,15 @@ public class NewsListActivity extends AppCompatActivity
 
             }
         }));
+    }
+
+    private void openNewsFeedActivity( NewsMetaInfo newsMetaInfo) {
+        Intent intent = new Intent(this , NewsFeedActivity.class);
+        intent.putExtra("ByLink" , false);
+        intent.putExtra("PushKeyId" , newsMetaInfo.getNewsPushKeyId());
+        intent.putExtra("NewsHeading" , newsMetaInfo.getNewsHeading());
+       // intent.putExtra("NewsImage" , newsMetaInfo.getNewsImage());
+        startActivity(intent);
     }
 
 
@@ -191,6 +200,11 @@ public class NewsListActivity extends AppCompatActivity
             @Override
             public void onNewsImageFetched(boolean isFetchedImage) {
                 newsListRecyclerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNewsInfo(NewsInfo newsInfo) {
+
             }
         });
 

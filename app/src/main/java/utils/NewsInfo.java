@@ -23,6 +23,27 @@ public class NewsInfo implements Parcelable {
     private String newsNotify;
     private String newsImageLink;
     private Bitmap newsImage;
+
+    public NewsInfo() {
+    }
+
+    @Override
+    public String toString() {
+        return "NewsInfo{" +
+                "newsHeadline='" + newsHeadline + '\'' +
+                ", newsSummary='" + newsSummary + '\'' +
+                ", newsSource='" + newsSource + '\'' +
+                ", newsCategory='" + newsCategory + '\'' +
+                ", newsDate='" + newsDate + '\'' +
+                ", newsTime='" + newsTime + '\'' +
+                ", newsNotify='" + newsNotify + '\'' +
+                ", newsImageLink='" + newsImageLink + '\'' +
+                ", newsImage=" + newsImage +
+                ", newsSourceListHashMap=" + newsSourceListHashMap +
+                ", newsSourceListArrayList=" + newsSourceListArrayList +
+                '}';
+    }
+
     private HashMap<String , NewsSourceList> newsSourceListHashMap;
 
     public ArrayList<NewsSourceList> getNewsSourceListArrayList() {
@@ -34,10 +55,6 @@ public class NewsInfo implements Parcelable {
     }
 
     ArrayList<NewsSourceList> newsSourceListArrayList ;
-
-
-    public NewsInfo() {
-    }
 
     public HashMap<String, NewsSourceList> getNewsSourceListHashMap() {
         return newsSourceListHashMap;

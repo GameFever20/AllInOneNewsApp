@@ -94,7 +94,8 @@ public class DatabaseHandlerFirebase {
 
 
                 NewsInfo newsInfo = dataSnapshot.getValue(NewsInfo.class);
-                Log.d("Db handler", "onDataChange: "+newsInfo);
+                databaseNewsListListner.onNewsInfo(newsInfo);
+
 
                 if (databaseNewsListListner != null) {
 
@@ -159,6 +160,7 @@ public class DatabaseHandlerFirebase {
         public void onNoticePost(boolean isSuccessful);
 
         void onNewsImageFetched(boolean isFetchedImage);
+        public void onNewsInfo(NewsInfo newsInfo);
     }
 
 }

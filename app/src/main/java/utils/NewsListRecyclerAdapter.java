@@ -20,7 +20,7 @@ public class NewsListRecyclerAdapter extends RecyclerView.Adapter<NewsListRecycl
 
     private ArrayList<NewsMetaInfo> newsMetaInfoArrayList;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView newsHeadingTextView, newsDateTextView, newsCategoryTextView;
         public ImageView newsImageView;
 
