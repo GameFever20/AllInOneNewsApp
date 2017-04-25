@@ -1,12 +1,14 @@
 package app.news.allinone.craftystudio.allinonenewsapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -91,6 +93,7 @@ public class NewsListActivity extends AppCompatActivity
 
             @Override
             public void onLongClick(View view, int position) {
+
 
             }
         }));

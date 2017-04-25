@@ -1,5 +1,8 @@
 package utils;
 
+import android.content.Context;
+
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import app.news.allinone.craftystudio.allinonenewsapp.R;
 
@@ -19,6 +23,7 @@ public class NewsSourcesRecyclerAdapter extends RecyclerView.Adapter<NewsSources
 
 
     private ArrayList<NewsSourceList> newsSourceListArrayList;
+    Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView newsHeadingTextView, newsSourceTextView, newsSummaryTextView;
@@ -35,8 +40,9 @@ public class NewsSourcesRecyclerAdapter extends RecyclerView.Adapter<NewsSources
     }
 
 
-    public NewsSourcesRecyclerAdapter(ArrayList<NewsSourceList> newsSourceListArrayList) {
+    public NewsSourcesRecyclerAdapter(ArrayList<NewsSourceList> newsSourceListArrayList ,Context context) {
         this.newsSourceListArrayList = newsSourceListArrayList;
+        this.context = context;
     }
 
     @Override
@@ -60,6 +66,12 @@ public class NewsSourcesRecyclerAdapter extends RecyclerView.Adapter<NewsSources
         } else {
             holder.newsSummaryTextView.setTextSize(0f);
         }
+
+        int r=  new Random().nextInt(4);
+        newsSourceList.setSourceIndex(r);
+        holder.newsSourceImageView.setImageDrawable(newsSourceList.resolveIconImage(context));
+
+
 
 
     }

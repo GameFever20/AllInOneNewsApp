@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="4dp"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        app:cardCornerRadius="1dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+
+        app:cardCornerRadius="0dp"
+        app:cardElevation="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/newslist_row_imageView"
@@ -23,39 +25,72 @@
                 android:minHeight="200dp"
                 android:src="@mipmap/ic_launcher" />
 
-            <TextView
-                android:id="@+id/newslist_row_heading_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="heading"
-                android:textAlignment="center"
-                android:textColor="@color/headingColor"
-                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/newslist_row_date_textView"
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="20/03/17" />
+                    android:src="@mipmap/ic_zee_logo"
+                    android:layout_margin="8dp"
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"></View>
+                    />
 
-                <TextView
-                    android:id="@+id/newslist_row_category_textView"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Technology" />
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/newslist_row_heading_textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="heading"
+                        android:textAlignment="center"
+                        android:textColor="@color/descriptionColor"
+                        android:fontFamily="serif"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/newslist_row_category_textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Technology"
+                            android:visibility="gone" />
+
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+
+                        </View>
+
+                        <TextView
+                            android:id="@+id/newslist_row_date_textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="monospace"
+                            android:text="20/03/17" />
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
 
             </LinearLayout>
-
 
         </LinearLayout>
 

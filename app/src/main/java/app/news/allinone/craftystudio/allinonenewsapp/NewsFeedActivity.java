@@ -115,7 +115,7 @@ public class NewsFeedActivity extends AppCompatActivity {
     private void initializeRecyclerView() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.newsFeed_newsSourceList_recyclerView);
         newsInfo.resolveHashmap();
-        newsSourcesRecyclerAdapter = new NewsSourcesRecyclerAdapter(newsInfo.getNewsSourceListArrayList());
+        newsSourcesRecyclerAdapter = new NewsSourcesRecyclerAdapter(newsInfo.getNewsSourceListArrayList(),this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -141,11 +141,19 @@ public class NewsFeedActivity extends AppCompatActivity {
 
     private void openNewsIndex(int position) {
 
+        boolean currentValue = newsInfo.getNewsSourceListArrayList().get(position).isExpanded();
+
         for (NewsSourceList newsSourceList : newsInfo.getNewsSourceListArrayList()){
             newsSourceList.setExpanded(false);
         }
 
-        newsInfo.getNewsSourceListArrayList().get(position).setExpanded(true);
+        if (currentValue) {
+            newsInfo.getNewsSourceListArrayList().get(position).setExpanded(false);
+        } else {
+            newsInfo.getNewsSourceListArrayList().get(position).setExpanded(true);
+        }
+
+
         newsSourcesRecyclerAdapter.notifyDataSetChanged();
 
     }
