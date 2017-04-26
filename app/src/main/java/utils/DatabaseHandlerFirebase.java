@@ -48,7 +48,7 @@ public class DatabaseHandlerFirebase {
 
         DatabaseReference myRef = mDatabase.child("NewsMetaInfo");
 
-        Query myref2 = myRef.limitToFirst(limit);
+        Query myref2 = myRef.limitToLast(limit);
 
         myref2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -67,8 +67,7 @@ public class NewsSourcesRecyclerAdapter extends RecyclerView.Adapter<NewsSources
             holder.newsSummaryTextView.setTextSize(0f);
         }
 
-        int r=  new Random().nextInt(4);
-        newsSourceList.setSourceIndex(r);
+
         holder.newsSourceImageView.setImageDrawable(NewsSourceList.resolveIconImage(context ,newsSourceList.getSourceIndex()));
 
 

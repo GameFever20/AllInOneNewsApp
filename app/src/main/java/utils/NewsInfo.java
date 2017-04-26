@@ -23,6 +23,9 @@ public class NewsInfo implements Parcelable {
     private String newsNotify;
     private String newsImageLink;
     private Bitmap newsImage;
+    private HashMap<String , NewsSourceList> newsSourceListHashMap;
+    ArrayList<NewsSourceList> newsSourceListArrayList ;
+
 
     public NewsInfo() {
     }
@@ -44,7 +47,6 @@ public class NewsInfo implements Parcelable {
                 '}';
     }
 
-    private HashMap<String , NewsSourceList> newsSourceListHashMap;
 
     public ArrayList<NewsSourceList> getNewsSourceListArrayList() {
         return newsSourceListArrayList;
@@ -54,7 +56,6 @@ public class NewsInfo implements Parcelable {
         this.newsSourceListArrayList = newsSourceListArrayList;
     }
 
-    ArrayList<NewsSourceList> newsSourceListArrayList ;
 
     public HashMap<String, NewsSourceList> getNewsSourceListHashMap() {
         return newsSourceListHashMap;
