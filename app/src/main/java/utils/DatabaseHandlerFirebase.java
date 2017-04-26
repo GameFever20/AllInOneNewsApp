@@ -59,7 +59,7 @@ public class DatabaseHandlerFirebase {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     NewsMetaInfo newsMetaInfo = snapshot.getValue(NewsMetaInfo.class);
 
-                    downloadImageFromFireBase(newsMetaInfo );
+                    downloadImageFromFireBase(newsMetaInfo);
                     newsMetaInfoArrayList.add(newsMetaInfo);
                 }
 
@@ -85,7 +85,7 @@ public class DatabaseHandlerFirebase {
 
     public void getNewsInfo(String pushKeyId) {
 
-        DatabaseReference myRef = mDatabase.child("NewsInfo/"+pushKeyId);
+        DatabaseReference myRef = mDatabase.child("NewsInfo/" + pushKeyId);
 
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -115,9 +115,9 @@ public class DatabaseHandlerFirebase {
 
     }
 
-    public void downloadImageFromFireBase(final NewsMetaInfo newsMetaInfo){
+    public void downloadImageFromFireBase(final NewsMetaInfo newsMetaInfo) {
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference riversRef = mStorageRef.child("NewsMetaInfo/newsImage"+newsMetaInfo.getNewsPushKeyId()+".jpg");
+        StorageReference riversRef = mStorageRef.child("NewsMetaInfo/newsImage" + newsMetaInfo.getNewsPushKeyId() + ".jpg");
 
 
         File localFile = null;
@@ -133,8 +133,8 @@ public class DatabaseHandlerFirebase {
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                         // Successfully downloaded data to local file
                         // ...
-                        newsMetaInfo.setNewsImage( BitmapFactory.decodeFile(finalLocalFile.getPath()));
-
+                        newsMetaInfo.setNewsImage(BitmapFactory.decodeFile(finalLocalFile.getPath()));
+                        newsMetaInfo.setNewsImageLocalPath(finalLocalFile.getPath());
                         databaseNewsListListner.onNewsImageFetched(true);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -146,10 +146,7 @@ public class DatabaseHandlerFirebase {
         });
 
 
-
-
     }
-
 
 
     public interface DataBaseHandlerNewsListListner {
@@ -160,6 +157,7 @@ public class DatabaseHandlerFirebase {
         public void onNoticePost(boolean isSuccessful);
 
         void onNewsImageFetched(boolean isFetchedImage);
+
         public void onNewsInfo(NewsInfo newsInfo);
     }
 

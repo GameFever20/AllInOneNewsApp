@@ -70,11 +70,11 @@ public class NewsSourceList {
         this.sourceIndex = sourceIndex;
     }
 
-    public Drawable resolveIconImage(Context context) {
+    public static Drawable resolveIconImage(Context context , int imageIndex) {
 
         Drawable drawable = null;
 
-        switch (getSourceIndex()) {
+        switch (imageIndex) {
             case 0:
                 drawable = ContextCompat.getDrawable(context, R.mipmap.ic_zee_logo);
                 break;

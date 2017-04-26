@@ -1,5 +1,6 @@
 package utils;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +20,11 @@ public class NewsListRecyclerAdapter extends RecyclerView.Adapter<NewsListRecycl
 
 
     private ArrayList<NewsMetaInfo> newsMetaInfoArrayList;
+    Context context;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView newsHeadingTextView, newsDateTextView, newsCategoryTextView;
-        public ImageView newsImageView;
+        public ImageView newsImageView ,newsSourceImageView;
 
         public MyViewHolder(View view) {
             super(view);
@@ -30,13 +32,15 @@ public class NewsListRecyclerAdapter extends RecyclerView.Adapter<NewsListRecycl
             newsDateTextView = (TextView) view.findViewById(R.id.newslist_row_date_textView);
             newsCategoryTextView = (TextView) view.findViewById(R.id.newslist_row_category_textView);
             newsImageView = (ImageView)view.findViewById(R.id.newslist_row_imageView);
+            newsSourceImageView =(ImageView)view.findViewById(R.id.newslist_row_newsSource_imageView);
 
         }
     }
 
 
-    public NewsListRecyclerAdapter(ArrayList<NewsMetaInfo> newsMetaInfoArrayList) {
+    public NewsListRecyclerAdapter(ArrayList<NewsMetaInfo> newsMetaInfoArrayList , Context context) {
         this.newsMetaInfoArrayList = newsMetaInfoArrayList;
+        this.context = context;
     }
 
     @Override
@@ -55,6 +59,9 @@ public class NewsListRecyclerAdapter extends RecyclerView.Adapter<NewsListRecycl
         holder.newsDateTextView.setText(newsMetaInfo.getNewsDate());
         holder.newsCategoryTextView.setText(newsMetaInfo.getNewsSource());
         holder.newsImageView.setImageBitmap(newsMetaInfo.getNewsImage());
+
+        holder.newsSourceImageView.setImageDrawable(NewsSourceList.resolveIconImage(context ,newsMetaInfo.getNewsSourceimageIndex()));
+
     }
 
     @Override

@@ -58,11 +58,24 @@ public class NewsFeedActivity extends AppCompatActivity {
         newsMetaInfo.setNewsPushKeyId(intent.getStringExtra("PushKeyId"));
         intent.getBooleanExtra("ByLink", false);
 
-        fetchNewsInfo();
+        newsMetaInfo.setNewsImageLocalPath(intent.getStringExtra("NewsImageLocalPath"));
+
+        if(!newsMetaInfo.resolvenewsLocalImage()){
+            fetchNewsInfo(false);
+        }
+
+        fetchNewsInfo(true);
+
+        TextView textView = (TextView) findViewById(R.id.newsFeed_newsHeading_textView);
+        textView.setText(newsMetaInfo.getNewsHeading());
+
+        ImageView imageView = (ImageView) findViewById(R.id.newsFeed_newsImage_ImageView);
+        imageView.setImageBitmap(newsMetaInfo.getNewsImage());
+
 
     }
 
-    private void fetchNewsInfo() {
+    private void fetchNewsInfo(boolean isfetchImage) {
         DatabaseHandlerFirebase databaseHandlerFirebase = new DatabaseHandlerFirebase();
         databaseHandlerFirebase.addNewsListListner(new DatabaseHandlerFirebase.DataBaseHandlerNewsListListner() {
             @Override
@@ -97,7 +110,9 @@ public class NewsFeedActivity extends AppCompatActivity {
             }
         });
         databaseHandlerFirebase.getNewsInfo(newsMetaInfo.getNewsPushKeyId());
-        databaseHandlerFirebase.downloadImageFromFireBase(newsMetaInfo);
+        if (isfetchImage) {
+            databaseHandlerFirebase.downloadImageFromFireBase(newsMetaInfo);
+        }
     }
 
     private void initializeActivity() {

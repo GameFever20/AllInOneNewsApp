@@ -76,7 +76,7 @@ public class NewsListActivity extends AppCompatActivity
 
     private void initializeRecyclerView() {
         recyclerView = (RecyclerView)findViewById(R.id.content_news_list_recyclerView);
-        newsListRecyclerAdapter= new NewsListRecyclerAdapter(newsMetaInfoArrayList);
+        newsListRecyclerAdapter= new NewsListRecyclerAdapter(newsMetaInfoArrayList ,this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -104,10 +104,9 @@ public class NewsListActivity extends AppCompatActivity
         intent.putExtra("ByLink" , false);
         intent.putExtra("PushKeyId" , newsMetaInfo.getNewsPushKeyId());
         intent.putExtra("NewsHeading" , newsMetaInfo.getNewsHeading());
-       // intent.putExtra("NewsImage" , newsMetaInfo.getNewsImage());
+        intent.putExtra("NewsImageLocalPath" , newsMetaInfo.getNewsImageLocalPath());
         startActivity(intent);
     }
-
 
     @Override
     public void onBackPressed() {
@@ -165,7 +164,6 @@ public class NewsListActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     public void initiaizeNewsInfoArrayList() {
        /* for (int i = 0; i < 10; i++) {

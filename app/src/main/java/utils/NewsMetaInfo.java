@@ -1,6 +1,7 @@
 package utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 /**
  * Created by bunny on 23/04/17.
@@ -12,10 +13,20 @@ public class NewsMetaInfo {
     String newsPushKeyId;
     Bitmap newsImage;
     String newsSource ;
+    int newsSourceimageIndex =0;
+
+    String newsImageLocalPath ="";
 
     public NewsMetaInfo() {
     }
 
+    public String getNewsImageLocalPath() {
+        return newsImageLocalPath;
+    }
+
+    public void setNewsImageLocalPath(String newsImageLocalPath) {
+        this.newsImageLocalPath = newsImageLocalPath;
+    }
 
     public String getNewsSource() {
         return newsSource;
@@ -56,6 +67,23 @@ public class NewsMetaInfo {
 
     public void setNewsImage(Bitmap newsImage) {
         this.newsImage = newsImage;
+    }
+
+    public int getNewsSourceimageIndex() {
+        return newsSourceimageIndex;
+    }
+
+    public void setNewsSourceimageIndex(int newsSourceimageIndex) {
+        this.newsSourceimageIndex = newsSourceimageIndex;
+    }
+
+    public boolean resolvenewsLocalImage(){
+        if (!newsImageLocalPath.isEmpty()){
+            setNewsImage(BitmapFactory.decodeFile(getNewsImageLocalPath()));
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }
