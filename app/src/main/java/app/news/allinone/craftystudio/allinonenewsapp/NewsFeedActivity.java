@@ -108,6 +108,11 @@ public class NewsFeedActivity extends AppCompatActivity {
                 NewsFeedActivity.this.newsInfo = newsInfo;
                 initializeActivity();
             }
+
+            @Override
+            public void ongetNewsListMore(ArrayList<NewsMetaInfo> newsMetaInfoArrayListMore) {
+
+            }
         });
         databaseHandlerFirebase.getNewsInfo(newsMetaInfo.getNewsPushKeyId());
         if (isfetchImage) {

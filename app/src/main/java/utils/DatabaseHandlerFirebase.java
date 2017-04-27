@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import app.news.allinone.craftystudio.allinonenewsapp.NewsListActivity;
+
 /**
  * Created by bunny on 22/04/17.
  */
@@ -59,13 +61,19 @@ public class DatabaseHandlerFirebase {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     NewsMetaInfo newsMetaInfo = snapshot.getValue(NewsMetaInfo.class);
 
-                    downloadImageFromFireBase(newsMetaInfo);
+
                     newsMetaInfoArrayList.add(newsMetaInfo);
                 }
 
+                /*Reversing Array list element */
+                ArrayList<NewsMetaInfo> newsMetaInfoArrayListFinal = new ArrayList<NewsMetaInfo>();
+                for (int i = newsMetaInfoArrayList.size() - 1; i >= 0; i--) {
+                    downloadImageFromFireBase(newsMetaInfoArrayList.get(i));
+                    newsMetaInfoArrayListFinal.add(newsMetaInfoArrayList.get(i));
+                }
 
                 if (databaseNewsListListner != null) {
-                    databaseNewsListListner.onNewsList(newsMetaInfoArrayList);
+                    databaseNewsListListner.onNewsList(newsMetaInfoArrayListFinal);
                 }
 
             }
@@ -76,6 +84,42 @@ public class DatabaseHandlerFirebase {
                     databaseNewsListListner.onCancel();
                 }
 
+            }
+        });
+
+
+    }
+
+    public void getNewsListMore(String lastPushKeyId , int limit){
+
+        DatabaseReference myRef = mDatabase.child("NewsMetaInfo");
+
+        Query myref2 = myRef.orderByKey().equalTo(lastPushKeyId).limitToLast(limit);
+        myref2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                ArrayList<NewsMetaInfo> newsMetaInfoArrayList = new ArrayList<NewsMetaInfo>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    NewsMetaInfo newsMetaInfo = snapshot.getValue(NewsMetaInfo.class);
+
+                    downloadImageFromFireBase(newsMetaInfo);
+                    newsMetaInfoArrayList.add(newsMetaInfo);
+                }
+                if (databaseNewsListListner != null) {
+                    databaseNewsListListner.ongetNewsListMore(newsMetaInfoArrayList);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                if (databaseNewsListListner != null) {
+                    databaseNewsListListner.onCancel();
+                }
             }
         });
 
@@ -159,6 +203,8 @@ public class DatabaseHandlerFirebase {
         void onNewsImageFetched(boolean isFetchedImage);
 
         public void onNewsInfo(NewsInfo newsInfo);
+
+        public void ongetNewsListMore(ArrayList<NewsMetaInfo> newsMetaInfoArrayListMore);
     }
 
 }

@@ -39,8 +39,9 @@ public class NewsListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ArrayList<NewsMetaInfo> newsMetaInfoArrayList = new ArrayList<>();
-    RecyclerView recyclerView ;
+    RecyclerView recyclerView;
     NewsListRecyclerAdapter newsListRecyclerAdapter;
+    boolean isLoadingMoreArticle = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +76,8 @@ public class NewsListActivity extends AppCompatActivity
     }
 
     private void initializeRecyclerView() {
-        recyclerView = (RecyclerView)findViewById(R.id.content_news_list_recyclerView);
-        newsListRecyclerAdapter= new NewsListRecyclerAdapter(newsMetaInfoArrayList ,this);
+        recyclerView = (RecyclerView) findViewById(R.id.content_news_list_recyclerView);
+        newsListRecyclerAdapter = new NewsListRecyclerAdapter(newsMetaInfoArrayList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -97,14 +98,81 @@ public class NewsListActivity extends AppCompatActivity
 
             }
         }));
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1)) {
+                    onScrolledToBottom();
+                    Toast.makeText(NewsListActivity.this, "Refreshing", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-    private void openNewsFeedActivity( NewsMetaInfo newsMetaInfo) {
-        Intent intent = new Intent(this , NewsFeedActivity.class);
-        intent.putExtra("ByLink" , false);
-        intent.putExtra("PushKeyId" , newsMetaInfo.getNewsPushKeyId());
-        intent.putExtra("NewsHeading" , newsMetaInfo.getNewsHeading());
-        intent.putExtra("NewsImageLocalPath" , newsMetaInfo.getNewsImageLocalPath());
+    private void onScrolledToBottom() {
+        //Toast.makeText(this, "Scrolled to bootom", Toast.LENGTH_SHORT).show();
+        if (isLoadingMoreArticle) {
+
+            loadMoreArticle();
+        } else {
+            isLoadingMoreArticle = true;
+        }
+    }
+
+    private void loadMoreArticle() {
+        DatabaseHandlerFirebase databaseHandlerFirebase = new DatabaseHandlerFirebase();
+        databaseHandlerFirebase.addNewsListListner(new DatabaseHandlerFirebase.DataBaseHandlerNewsListListner() {
+            @Override
+            public void onNewsList(ArrayList<NewsMetaInfo> newsMetaInfoArrayList) {
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onNoticePost(boolean isSuccessful) {
+
+            }
+
+            @Override
+            public void onNewsImageFetched(boolean isFetchedImage) {
+
+            }
+
+            @Override
+            public void onNewsInfo(NewsInfo newsInfo) {
+
+            }
+
+            @Override
+            public void ongetNewsListMore(ArrayList<NewsMetaInfo> newsMetaInfoArrayListMore) {
+                newsMetaInfoArrayListMore.remove(newsMetaInfoArrayListMore.size()-1);
+                for (int i = newsMetaInfoArrayListMore.size() - 1; i >= 0; i--) {
+                    NewsListActivity.this.newsMetaInfoArrayList.add(newsMetaInfoArrayListMore.get(i));
+
+                }
+
+                isLoadingMoreArticle = false;
+                newsListRecyclerAdapter.notifyDataSetChanged();
+                Toast.makeText(NewsListActivity.this, "Done loading", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        databaseHandlerFirebase.getNewsListMore(newsMetaInfoArrayList.get(newsMetaInfoArrayList.size() - 1).getNewsPushKeyId(), 10);
+
+    }
+
+    private void openNewsFeedActivity(NewsMetaInfo newsMetaInfo) {
+        Intent intent = new Intent(this, NewsFeedActivity.class);
+        intent.putExtra("ByLink", false);
+        intent.putExtra("PushKeyId", newsMetaInfo.getNewsPushKeyId());
+        intent.putExtra("NewsHeading", newsMetaInfo.getNewsHeading());
+        intent.putExtra("NewsImageLocalPath", newsMetaInfo.getNewsImageLocalPath());
         startActivity(intent);
     }
 
@@ -181,9 +249,12 @@ public class NewsListActivity extends AppCompatActivity
             @Override
             public void onNewsList(ArrayList<NewsMetaInfo> newsMetaInfoArrayList) {
 
-                for (int i =newsMetaInfoArrayList.size()-1 ; i>=0 ; i--){
-                    NewsListActivity.this.newsMetaInfoArrayList.add(newsMetaInfoArrayList.get(i));
+
+                for (NewsMetaInfo newsMetaInfo : newsMetaInfoArrayList) {
+
+                    NewsListActivity.this.newsMetaInfoArrayList.add(newsMetaInfo);
                 }
+
                 newsListRecyclerAdapter.notifyDataSetChanged();
 
             }
@@ -205,6 +276,11 @@ public class NewsListActivity extends AppCompatActivity
 
             @Override
             public void onNewsInfo(NewsInfo newsInfo) {
+
+            }
+
+            @Override
+            public void ongetNewsListMore(ArrayList<NewsMetaInfo> newsMetaInfoArrayListMore) {
 
             }
         });
