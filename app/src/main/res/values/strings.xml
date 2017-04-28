@@ -99,4 +99,9 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_news_source_feed">NewsSourceFeedActivity</string>
+    <string name="app_code" >q3aas</string>
+    <string name="package_name" >app.news.allinone.craftystudio.allinonenewsapp</string>
+    <string name="utm_source">app</string>
+    <string name="utm_campaign">newsarticle</string>
+    <string name="utm_medium">socialmedia</string>
 </resources>

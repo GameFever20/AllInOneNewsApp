@@ -12,12 +12,24 @@ public class NewsMetaInfo {
     String newsDate;
     String newsPushKeyId;
     Bitmap newsImage;
-    String newsSource ;
-    int newsSourceimageIndex =0;
+    String newsSource;
+    long newsTime = 0l;
+    int newsSourceimageIndex = 0;
 
-    String newsImageLocalPath ="";
+    String newsImageLocalPath = "";
+
+
+    String newsTimeString ="";
 
     public NewsMetaInfo() {
+    }
+
+    public long getNewsTime() {
+        return newsTime;
+    }
+
+    public void setNewsTime(long newsTime) {
+        this.newsTime = newsTime;
     }
 
     public String getNewsImageLocalPath() {
@@ -77,11 +89,23 @@ public class NewsMetaInfo {
         this.newsSourceimageIndex = newsSourceimageIndex;
     }
 
-    public boolean resolvenewsLocalImage(){
-        if (!newsImageLocalPath.isEmpty()){
+    public String getNewsTimeString() {
+        return newsTimeString;
+    }
+
+    public void setNewsTimeString(String newsTimeString) {
+        this.newsTimeString = newsTimeString;
+    }
+
+    public void resolveNewsTimeString(){
+        NewsInfo.resolveDateString(getNewsTime());
+    }
+
+    public boolean resolvenewsLocalImage() {
+        if (!newsImageLocalPath.isEmpty()) {
             setNewsImage(BitmapFactory.decodeFile(getNewsImageLocalPath()));
             return true;
-        }else{
+        } else {
             return false;
         }
     }

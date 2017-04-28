@@ -3,6 +3,7 @@ package app.news.allinone.craftystudio.allinonenewsapp;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +28,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.appinvite.AppInvite;
+import com.google.android.gms.appinvite.AppInviteInvitationResult;
+import com.google.android.gms.appinvite.AppInviteReferral;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+
+import java.sql.Time;
 import java.util.ArrayList;
 
 import utils.ClickListener;
@@ -69,11 +79,57 @@ public class NewsListActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        initiaizeNewsInfoArrayList();
-        initializeRecyclerView();
 
+        // Build GoogleApiClient with AppInvite API for receiving deep links
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+                    }
+                })
+                .addApi(AppInvite.API)
+                .build();
+
+        // Check if this app was launched from a deep link. Setting autoLaunchDeepLink to true
+        // would automatically launch the deep link if one is found.
+        boolean autoLaunchDeepLink = false;
+        AppInvite.AppInviteApi.getInvitation(mGoogleApiClient, this, autoLaunchDeepLink)
+                .setResultCallback(
+                        new ResultCallback<AppInviteInvitationResult>() {
+                            @Override
+                            public void onResult(@NonNull AppInviteInvitationResult result) {
+                                if (result.getStatus().isSuccess()) {
+                                    // Extract deep link from Intent
+                                    Intent intent = result.getInvitationIntent();
+                                    String deepLink = AppInviteReferral.getDeepLink(intent);
+
+                                    Log.d("NewsList", "onResult: " + deepLink);
+
+                                    int endIndex = deepLink.indexOf("?");
+                                    String pushKeyId = deepLink.substring(25, endIndex);
+                                    Log.d("NewsList", "onResult: " + pushKeyId);
+                                    openNewsFeedActivity(pushKeyId);
+
+                                    // Handle the deep link. For example, open the linked
+                                    // content, or apply promotional credit to the user's
+                                    // account.
+
+                                    // ...
+                                } else {
+                                    Log.d("NewsList", "getInvitation: no deep link found.");
+                                    initiaizeNewsInfoArrayList();
+                                    initializeRecyclerView();
+
+
+                                }
+                            }
+                        });
+
+        Log.d("NewsList", "onResult: ");
 
     }
+
 
     private void initializeRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.content_news_list_recyclerView);
@@ -151,7 +207,7 @@ public class NewsListActivity extends AppCompatActivity
 
             @Override
             public void ongetNewsListMore(ArrayList<NewsMetaInfo> newsMetaInfoArrayListMore) {
-                newsMetaInfoArrayListMore.remove(newsMetaInfoArrayListMore.size()-1);
+                newsMetaInfoArrayListMore.remove(newsMetaInfoArrayListMore.size() - 1);
                 for (int i = newsMetaInfoArrayListMore.size() - 1; i >= 0; i--) {
                     NewsListActivity.this.newsMetaInfoArrayList.add(newsMetaInfoArrayListMore.get(i));
 
@@ -175,6 +231,15 @@ public class NewsListActivity extends AppCompatActivity
         intent.putExtra("NewsImageLocalPath", newsMetaInfo.getNewsImageLocalPath());
         startActivity(intent);
     }
+
+    private void openNewsFeedActivity(String pushKeyId) {
+        Intent intent = new Intent(this, NewsFeedActivity.class);
+        intent.putExtra("ByLink", true);
+        intent.putExtra("PushKeyId", pushKeyId);
+
+        startActivity(intent);
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -252,6 +317,7 @@ public class NewsListActivity extends AppCompatActivity
 
                 for (NewsMetaInfo newsMetaInfo : newsMetaInfoArrayList) {
 
+                    //newsMetaInfo.resolveNewsTimeString();
                     NewsListActivity.this.newsMetaInfoArrayList.add(newsMetaInfo);
                 }
 
@@ -287,5 +353,6 @@ public class NewsListActivity extends AppCompatActivity
 
 
     }
+
 
 }

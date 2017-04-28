@@ -43,8 +43,7 @@ public class NewsFeedActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                onShareClick();
             }
         });
 
@@ -54,24 +53,29 @@ public class NewsFeedActivity extends AppCompatActivity {
     private void resolveIntent() {
 
         Intent intent = getIntent();
-        newsMetaInfo.setNewsHeading(intent.getStringExtra("NewsHeading"));
-        newsMetaInfo.setNewsPushKeyId(intent.getStringExtra("PushKeyId"));
-        intent.getBooleanExtra("ByLink", false);
+        boolean isDynamicLink= intent.getBooleanExtra("ByLink", false);
 
-        newsMetaInfo.setNewsImageLocalPath(intent.getStringExtra("NewsImageLocalPath"));
-
-        if(!newsMetaInfo.resolvenewsLocalImage()){
+        if(isDynamicLink){
             fetchNewsInfo(false);
         }
+        else {
+            newsMetaInfo.setNewsHeading(intent.getStringExtra("NewsHeading"));
+            newsMetaInfo.setNewsPushKeyId(intent.getStringExtra("PushKeyId"));
 
-        fetchNewsInfo(true);
+            newsMetaInfo.setNewsImageLocalPath(intent.getStringExtra("NewsImageLocalPath"));
 
-        TextView textView = (TextView) findViewById(R.id.newsFeed_newsHeading_textView);
-        textView.setText(newsMetaInfo.getNewsHeading());
+            if (!newsMetaInfo.resolvenewsLocalImage()) {
+                fetchNewsInfo(false);
+            }
 
-        ImageView imageView = (ImageView) findViewById(R.id.newsFeed_newsImage_ImageView);
-        imageView.setImageBitmap(newsMetaInfo.getNewsImage());
+            fetchNewsInfo(true);
 
+            TextView textView = (TextView) findViewById(R.id.newsFeed_newsHeading_textView);
+            textView.setText(newsMetaInfo.getNewsHeading());
+
+            ImageView imageView = (ImageView) findViewById(R.id.newsFeed_newsImage_ImageView);
+            imageView.setImageBitmap(newsMetaInfo.getNewsImage());
+        }
 
     }
 
@@ -185,6 +189,42 @@ public class NewsFeedActivity extends AppCompatActivity {
 
 
         startActivity(intent);
+
+    }
+
+
+    public void onShareClick(){
+
+        String appCode = getString(R.string.app_code);
+        String appName = getString(R.string.app_name);
+        String packageName = getString(R.string.package_name);
+
+        String utmSource = getString(R.string.utm_source);
+        String utmCampaign = getString(R.string.utm_campaign);
+        String utmMedium = getString(R.string.utm_medium);
+
+        String url = "https://" + appCode + ".app.goo.gl/?link=https://AllInOneNews.com/"
+                +newsMetaInfo.getNewsPushKeyId()
+                + "&apn=" +
+                packageName + "&st=" +
+                newsInfo.getNewsHeadline()
+                + "&sd=" +
+                appName + "&utm_source=" +
+                utmSource + "&utm_medium=" +
+                utmMedium + "&utm_campaign=" +
+                utmCampaign;
+
+        // Toast.makeText(this, "Shared an article " + url, Toast.LENGTH_SHORT).show();
+
+        url = url.replaceAll(" ", "+");
+
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Download the app and Start reading");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, url + " \nHey read this editorial");
+        startActivity(Intent.createChooser(sharingIntent, "Share Editorial via"));
+
 
     }
 

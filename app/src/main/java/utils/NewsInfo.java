@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class NewsInfo implements Parcelable {
 
     public NewsInfo() {
     }
+
 
     @Override
     public String toString() {
@@ -197,6 +199,57 @@ public class NewsInfo implements Parcelable {
     };
 
 
+    public static  String resolveDateString( long newsTime){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(newsTime);
+
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+        Calendar currentTime = Calendar.getInstance();
+        int mCurrentYear = currentTime.get(Calendar.YEAR);
+        int mCurrentMonth = currentTime.get(Calendar.MONTH);
+        int mCurrentDay = currentTime.get(Calendar.DAY_OF_MONTH);
+
+        if (mYear == mCurrentYear){
+            if (mCurrentMonth == mMonth){
+
+
+
+                if(mCurrentDay -mDay== 0){
+                    return "Today";
+                }else if (mCurrentDay -mDay== 1){
+                    return "Yesterday";
+                }else if(mCurrentDay -mDay <7){
+                    return mCurrentDay -mDay+" days ago";
+                }else if (mCurrentDay -mDay <14){
+                    return "1 week ago";
+                }else if (mCurrentDay -mDay <21){
+                    return "2 week ago";
+                }else if (mCurrentDay -mDay <28){
+                    return "3 week ago";
+                }else if (mCurrentDay -mDay <35){
+                    return "4 week ago";
+                }
+
+
+            }else{
+                if (mCurrentMonth -mMonth <12){
+                    return mCurrentMonth-mMonth +" month ago";
+                }
+
+            }
+
+        }else{
+            return mCurrentYear - mYear +" year ago";
+
+        }
+
+        return "";
+
+    }
 
 }
 
