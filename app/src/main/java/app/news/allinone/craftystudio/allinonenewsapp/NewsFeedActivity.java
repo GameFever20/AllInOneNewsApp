@@ -161,7 +161,7 @@ public class NewsFeedActivity extends AppCompatActivity {
 
     private void openNewsIndex(int position) {
 
-        boolean currentValue = newsInfo.getNewsSourceListArrayList().get(position).isExpanded();
+        /*boolean currentValue = newsInfo.getNewsSourceListArrayList().get(position).isExpanded();
 
         for (NewsSourceList newsSourceList : newsInfo.getNewsSourceListArrayList()){
             newsSourceList.setExpanded(false);
@@ -175,6 +175,16 @@ public class NewsFeedActivity extends AppCompatActivity {
 
 
         newsSourcesRecyclerAdapter.notifyDataSetChanged();
+*/
+
+        Intent intent = new Intent(this , NewsSourceFeedActivity.class);
+        intent.putExtra("NewsHeading",newsInfo.getNewsSourceListArrayList().get(position).getNewsListHeading());
+        intent.putExtra("NewsArticle",newsInfo.getNewsSourceListArrayList().get(position).getNewsListArticle());
+        intent.putExtra("NewsSourceIndex",newsInfo.getNewsSourceListArrayList().get(position).getSourceIndex());
+        intent.putExtra("NewsImageLocalPath" , newsMetaInfo.getNewsImageLocalPath());
+
+
+        startActivity(intent);
 
     }
 
