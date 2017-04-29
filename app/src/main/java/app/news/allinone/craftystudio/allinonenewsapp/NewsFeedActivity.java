@@ -53,22 +53,22 @@ public class NewsFeedActivity extends AppCompatActivity {
     private void resolveIntent() {
 
         Intent intent = getIntent();
-        boolean isDynamicLink= intent.getBooleanExtra("ByLink", false);
-
-        if(isDynamicLink){
-            fetchNewsInfo(false);
-        }
-        else {
+        boolean isDynamicLink = intent.getBooleanExtra("ByLink", false);
+        newsMetaInfo.setNewsPushKeyId(intent.getStringExtra("PushKeyId"));
+        if (isDynamicLink) {
+            fetchNewsInfo(false, true);
+            //fetchNewsMetaInfo(newsMetaInfo.getNewsPushKeyId());
+        } else {
             newsMetaInfo.setNewsHeading(intent.getStringExtra("NewsHeading"));
             newsMetaInfo.setNewsPushKeyId(intent.getStringExtra("PushKeyId"));
 
             newsMetaInfo.setNewsImageLocalPath(intent.getStringExtra("NewsImageLocalPath"));
 
             if (!newsMetaInfo.resolvenewsLocalImage()) {
-                fetchNewsInfo(false);
+                fetchNewsInfo(false, false);
             }
 
-            fetchNewsInfo(true);
+            fetchNewsInfo(true, false);
 
             TextView textView = (TextView) findViewById(R.id.newsFeed_newsHeading_textView);
             textView.setText(newsMetaInfo.getNewsHeading());
@@ -79,11 +79,15 @@ public class NewsFeedActivity extends AppCompatActivity {
 
     }
 
-    private void fetchNewsInfo(boolean isfetchImage) {
+    private void fetchNewsInfo(boolean isfetchImage, boolean isFetchNewsMetaInfo) {
         DatabaseHandlerFirebase databaseHandlerFirebase = new DatabaseHandlerFirebase();
         databaseHandlerFirebase.addNewsListListner(new DatabaseHandlerFirebase.DataBaseHandlerNewsListListner() {
             @Override
             public void onNewsList(ArrayList<NewsMetaInfo> newsMetaInfoArrayList) {
+                newsMetaInfo = newsMetaInfoArrayList.get(0);
+                TextView textView = (TextView) findViewById(R.id.newsFeed_newsHeading_textView);
+                textView.setText(newsMetaInfo.getNewsHeading());
+
 
             }
 
@@ -122,6 +126,9 @@ public class NewsFeedActivity extends AppCompatActivity {
         if (isfetchImage) {
             databaseHandlerFirebase.downloadImageFromFireBase(newsMetaInfo);
         }
+        if (isFetchNewsMetaInfo) {
+            databaseHandlerFirebase.getNewsMetaInfo(newsMetaInfo.getNewsPushKeyId());
+        }
     }
 
     private void initializeActivity() {
@@ -139,7 +146,7 @@ public class NewsFeedActivity extends AppCompatActivity {
     private void initializeRecyclerView() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.newsFeed_newsSourceList_recyclerView);
         newsInfo.resolveHashmap();
-        newsSourcesRecyclerAdapter = new NewsSourcesRecyclerAdapter(newsInfo.getNewsSourceListArrayList(),this);
+        newsSourcesRecyclerAdapter = new NewsSourcesRecyclerAdapter(newsInfo.getNewsSourceListArrayList(), this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -181,11 +188,11 @@ public class NewsFeedActivity extends AppCompatActivity {
         newsSourcesRecyclerAdapter.notifyDataSetChanged();
 */
 
-        Intent intent = new Intent(this , NewsSourceFeedActivity.class);
-        intent.putExtra("NewsHeading",newsInfo.getNewsSourceListArrayList().get(position).getNewsListHeading());
-        intent.putExtra("NewsArticle",newsInfo.getNewsSourceListArrayList().get(position).getNewsListArticle());
-        intent.putExtra("NewsSourceIndex",newsInfo.getNewsSourceListArrayList().get(position).getSourceIndex());
-        intent.putExtra("NewsImageLocalPath" , newsMetaInfo.getNewsImageLocalPath());
+        Intent intent = new Intent(this, NewsSourceFeedActivity.class);
+        intent.putExtra("NewsHeading", newsInfo.getNewsSourceListArrayList().get(position).getNewsListHeading());
+        intent.putExtra("NewsArticle", newsInfo.getNewsSourceListArrayList().get(position).getNewsListArticle());
+        intent.putExtra("NewsSourceIndex", newsInfo.getNewsSourceListArrayList().get(position).getSourceIndex());
+        intent.putExtra("NewsImageLocalPath", newsMetaInfo.getNewsImageLocalPath());
 
 
         startActivity(intent);
@@ -193,7 +200,7 @@ public class NewsFeedActivity extends AppCompatActivity {
     }
 
 
-    public void onShareClick(){
+    public void onShareClick() {
 
         String appCode = getString(R.string.app_code);
         String appName = getString(R.string.app_name);
@@ -204,7 +211,7 @@ public class NewsFeedActivity extends AppCompatActivity {
         String utmMedium = getString(R.string.utm_medium);
 
         String url = "https://" + appCode + ".app.goo.gl/?link=https://AllInOneNews.com/"
-                +newsMetaInfo.getNewsPushKeyId()
+                + newsMetaInfo.getNewsPushKeyId()
                 + "&apn=" +
                 packageName + "&st=" +
                 newsInfo.getNewsHeadline()

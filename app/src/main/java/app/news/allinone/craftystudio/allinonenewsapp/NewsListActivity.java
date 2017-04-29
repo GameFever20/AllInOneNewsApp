@@ -34,6 +34,8 @@ import com.google.android.gms.appinvite.AppInviteReferral;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -52,6 +54,67 @@ public class NewsListActivity extends AppCompatActivity
     RecyclerView recyclerView;
     NewsListRecyclerAdapter newsListRecyclerAdapter;
     boolean isLoadingMoreArticle = false;
+    boolean isOpenByDynamicLink= false;
+    boolean isActivityInitialized =false;
+    GoogleApiClient mGoogleApiClient=null;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+        if(isActivityInitialized && mGoogleApiClient!=null){
+            // Check if this app was launched from a deep link. Setting autoLaunchDeepLink to true
+            // would automatically launch the deep link if one is found.
+            boolean autoLaunchDeepLink = false;
+            AppInvite.AppInviteApi.getInvitation(mGoogleApiClient, this, autoLaunchDeepLink)
+                    .setResultCallback(
+                            new ResultCallback<AppInviteInvitationResult>() {
+                                @Override
+                                public void onResult(@NonNull AppInviteInvitationResult result) {
+                                    if (result.getStatus().isSuccess()) {
+                                        // Extract deep link from Intent
+                                        Intent intent = result.getInvitationIntent();
+                                        String deepLink = AppInviteReferral.getDeepLink(intent);
+
+                                        Log.d("NewsList", "onResult: " + deepLink);
+
+                                        int endIndex = deepLink.indexOf("?");
+                                        String pushKeyId = deepLink.substring(25, endIndex);
+                                        Log.d("NewsList", "onResult: " + pushKeyId);
+                                        openNewsFeedActivity(pushKeyId);
+                                        isOpenByDynamicLink=true;
+
+                                        // Handle the deep link. For example, open the linked
+                                        // content, or apply promotional credit to the user's
+                                        // account.
+
+                                        // ...
+                                    } else {
+
+
+                                    }
+                                }
+                            });
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isOpenByDynamicLink ){
+            Log.d("NewsList", "getInvitation: no deep link found.");
+            initiaizeNewsInfoArrayList();
+            initializeRecyclerView();
+            isOpenByDynamicLink=false;
+
+        }
+
+
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +144,7 @@ public class NewsListActivity extends AppCompatActivity
 
 
         // Build GoogleApiClient with AppInvite API for receiving deep links
-        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
+         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -110,6 +173,7 @@ public class NewsListActivity extends AppCompatActivity
                                     String pushKeyId = deepLink.substring(25, endIndex);
                                     Log.d("NewsList", "onResult: " + pushKeyId);
                                     openNewsFeedActivity(pushKeyId);
+                                    isOpenByDynamicLink=true;
 
                                     // Handle the deep link. For example, open the linked
                                     // content, or apply promotional credit to the user's
@@ -121,12 +185,16 @@ public class NewsListActivity extends AppCompatActivity
                                     initiaizeNewsInfoArrayList();
                                     initializeRecyclerView();
 
+                                    isActivityInitialized = true ;
 
                                 }
                             }
                         });
 
         Log.d("NewsList", "onResult: ");
+
+        FirebaseApp.initializeApp(this);
+        FirebaseMessaging.getInstance().subscribeToTopic("subscribed");
 
     }
 

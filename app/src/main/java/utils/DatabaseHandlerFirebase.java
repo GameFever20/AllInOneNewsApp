@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.NumberPicker;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -87,6 +88,30 @@ public class DatabaseHandlerFirebase {
             }
         });
 
+
+    }
+
+    public void getNewsMetaInfo(String pushKeyId){
+        DatabaseReference myRef = mDatabase.child("NewsMetaInfo/"+pushKeyId);
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<NewsMetaInfo> newsMetaInfoArrayList = new ArrayList<NewsMetaInfo>();
+                NewsMetaInfo newsMetaInfo = dataSnapshot.getValue(NewsMetaInfo.class);
+                newsMetaInfoArrayList.add(newsMetaInfo);
+
+                if (databaseNewsListListner != null) {
+                    databaseNewsListListner.onNewsList(newsMetaInfoArrayList);
+                }
+                downloadImageFromFireBase(newsMetaInfo);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
