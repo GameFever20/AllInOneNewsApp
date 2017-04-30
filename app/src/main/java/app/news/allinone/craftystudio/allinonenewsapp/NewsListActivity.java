@@ -37,6 +37,9 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import io.fabric.sdk.android.Fabric;
 import java.sql.Time;
 import java.util.ArrayList;
 
@@ -49,6 +52,11 @@ import utils.RecyclerTouchListener;
 
 public class NewsListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
+    private static final String TWITTER_KEY = "p8xaxXfmzsLoy6YyHutBmP3O9";
+    private static final String TWITTER_SECRET = "JY2IBm2dVp7ezP8wyMm4XkmqqKccuNyuWg0xvEO2l3eYuF4jkD";
+
 
     ArrayList<NewsMetaInfo> newsMetaInfoArrayList = new ArrayList<>();
     RecyclerView recyclerView;
@@ -119,6 +127,8 @@ public class NewsListActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_news_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -195,6 +205,24 @@ public class NewsListActivity extends AppCompatActivity
 
         FirebaseApp.initializeApp(this);
         FirebaseMessaging.getInstance().subscribeToTopic("subscribed");
+
+
+        resolveIntent();
+
+    }
+
+    private void resolveIntent() {
+        Intent intent = getIntent();
+
+        try {
+            String pushKeyId=  intent.getStringExtra("pushKeyId");
+            if(pushKeyId.length() >5) {
+                openNewsFeedActivity(pushKeyId);
+                isOpenByDynamicLink = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

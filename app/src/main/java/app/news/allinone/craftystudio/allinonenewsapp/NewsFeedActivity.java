@@ -10,13 +10,24 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.tweetui.TweetUtils;
+import com.twitter.sdk.android.tweetui.TweetView;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import utils.ClickListener;
 import utils.DatabaseHandlerFirebase;
@@ -48,6 +59,8 @@ public class NewsFeedActivity extends AppCompatActivity {
         });
 
         resolveIntent();
+
+
     }
 
     private void resolveIntent() {
@@ -141,6 +154,8 @@ public class NewsFeedActivity extends AppCompatActivity {
 
         initializeRecyclerView();
 
+        initializeTweets();
+
     }
 
     private void initializeRecyclerView() {
@@ -229,11 +244,43 @@ public class NewsFeedActivity extends AppCompatActivity {
         sharingIntent.setType("text/plain");
 
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Download the app and Start reading");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, url + " \nHey read this editorial");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, url + " \nRead More ");
         startActivity(Intent.createChooser(sharingIntent, "Share Editorial via"));
 
 
     }
 
+
+    public void initializeTweets() {
+        final LinearLayout myLayout
+                = (LinearLayout) findViewById(R.id.my_tweet_layout);
+
+
+        // TODO: Use a more specific parent
+
+        // TODO: Base this Tweet ID on some data from elsewhere in your app
+
+
+        if (newsInfo.getNewsTweetListHashMap() != null) {
+            for (Long tweetId : newsInfo.getNewsTweetListHashMap().values()) {
+
+
+                TweetUtils.loadTweet(tweetId, new Callback<Tweet>() {
+                    @Override
+                    public void success(Result<Tweet> result) {
+                        TweetView tweetView = new TweetView(NewsFeedActivity.this, result.data);
+                        myLayout.addView(tweetView);
+                    }
+
+                    @Override
+                    public void failure(TwitterException exception) {
+                        Log.d("TwitterKit", "Load Tweet failure", exception);
+                    }
+                });
+            }
+        }
+
+
+    }
 
 }

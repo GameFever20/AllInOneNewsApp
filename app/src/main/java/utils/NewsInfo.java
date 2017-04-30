@@ -28,9 +28,20 @@ public class NewsInfo implements Parcelable {
     ArrayList<NewsSourceList> newsSourceListArrayList ;
 
 
+
+    private HashMap<String , Long> newsTweetListHashMap;
+
+
     public NewsInfo() {
     }
 
+    public HashMap<String, Long> getNewsTweetListHashMap() {
+        return newsTweetListHashMap;
+    }
+
+    public void setNewsTweetListHashMap(HashMap<String, Long> newsTweetListHashMap) {
+        this.newsTweetListHashMap = newsTweetListHashMap;
+    }
 
     @Override
     public String toString() {
