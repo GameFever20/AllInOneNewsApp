@@ -2,6 +2,7 @@ package app.news.allinone.craftystudio.allinonenewsapp;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -39,7 +40,9 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+
 import io.fabric.sdk.android.Fabric;
+
 import java.sql.Time;
 import java.util.ArrayList;
 
@@ -62,16 +65,16 @@ public class NewsListActivity extends AppCompatActivity
     RecyclerView recyclerView;
     NewsListRecyclerAdapter newsListRecyclerAdapter;
     boolean isLoadingMoreArticle = false;
-    boolean isOpenByDynamicLink= false;
-    boolean isActivityInitialized =false;
-    GoogleApiClient mGoogleApiClient=null;
+    boolean isOpenByDynamicLink = false;
+    boolean isActivityInitialized = false;
+    GoogleApiClient mGoogleApiClient = null;
 
     @Override
     protected void onStart() {
         super.onStart();
 
 
-        if(isActivityInitialized && mGoogleApiClient!=null){
+        if (isActivityInitialized && mGoogleApiClient != null) {
             // Check if this app was launched from a deep link. Setting autoLaunchDeepLink to true
             // would automatically launch the deep link if one is found.
             boolean autoLaunchDeepLink = false;
@@ -91,7 +94,7 @@ public class NewsListActivity extends AppCompatActivity
                                         String pushKeyId = deepLink.substring(25, endIndex);
                                         Log.d("NewsList", "onResult: " + pushKeyId);
                                         openNewsFeedActivity(pushKeyId);
-                                        isOpenByDynamicLink=true;
+                                        isOpenByDynamicLink = true;
 
                                         // Handle the deep link. For example, open the linked
                                         // content, or apply promotional credit to the user's
@@ -111,15 +114,13 @@ public class NewsListActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if(isOpenByDynamicLink ){
+        if (isOpenByDynamicLink) {
             Log.d("NewsList", "getInvitation: no deep link found.");
             initiaizeNewsInfoArrayList();
             initializeRecyclerView();
-            isOpenByDynamicLink=false;
+            isOpenByDynamicLink = false;
 
         }
-
-
 
 
     }
@@ -154,7 +155,7 @@ public class NewsListActivity extends AppCompatActivity
 
 
         // Build GoogleApiClient with AppInvite API for receiving deep links
-         mGoogleApiClient = new GoogleApiClient.Builder(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -183,7 +184,7 @@ public class NewsListActivity extends AppCompatActivity
                                     String pushKeyId = deepLink.substring(25, endIndex);
                                     Log.d("NewsList", "onResult: " + pushKeyId);
                                     openNewsFeedActivity(pushKeyId);
-                                    isOpenByDynamicLink=true;
+                                    isOpenByDynamicLink = true;
 
                                     // Handle the deep link. For example, open the linked
                                     // content, or apply promotional credit to the user's
@@ -195,7 +196,7 @@ public class NewsListActivity extends AppCompatActivity
                                     initiaizeNewsInfoArrayList();
                                     initializeRecyclerView();
 
-                                    isActivityInitialized = true ;
+                                    isActivityInitialized = true;
 
                                 }
                             }
@@ -215,8 +216,8 @@ public class NewsListActivity extends AppCompatActivity
         Intent intent = getIntent();
 
         try {
-            String pushKeyId=  intent.getStringExtra("pushKeyId");
-            if(pushKeyId.length() >5) {
+            String pushKeyId = intent.getStringExtra("pushKeyId");
+            if (pushKeyId.length() > 5) {
                 openNewsFeedActivity(pushKeyId);
                 isOpenByDynamicLink = true;
             }
@@ -376,24 +377,52 @@ public class NewsListActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_share) {
+            onShareClick();
+        } else if (id == R.id.nav_rate) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            onRateClick();
+        } else if (id == R.id.nav_suggestion) {
+           onSuggestion();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void onRateClick() {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=app.news.allinone.craftystudio.allinonenewsapp")));
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void onSuggestion() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"acraftystudio@gmail.com"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Suggestion for Editorial App");
+        intent.putExtra(Intent.EXTRA_TEXT, "Your suggestion here \n");
+
+        intent.setType("message/rfc822");
+
+        startActivity(Intent.createChooser(intent, "Select Email App"));
+
+    }
+
+
+
+    private void onShareClick() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Download the app and Start reading");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=app.news.allinone.craftystudio.allinonenewsapp");
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+    }
+
 
     public void initiaizeNewsInfoArrayList() {
        /* for (int i = 0; i < 10; i++) {
