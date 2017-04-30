@@ -267,8 +267,9 @@ public class NewsListActivity extends AppCompatActivity
         //Toast.makeText(this, "Scrolled to bootom", Toast.LENGTH_SHORT).show();
         if (isLoadingMoreArticle) {
 
-            loadMoreArticle();
+
         } else {
+            loadMoreArticle();
             isLoadingMoreArticle = true;
         }
     }

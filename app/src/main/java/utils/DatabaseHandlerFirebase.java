@@ -119,7 +119,7 @@ public class DatabaseHandlerFirebase {
 
         DatabaseReference myRef = mDatabase.child("NewsMetaInfo");
 
-        Query myref2 = myRef.orderByKey().equalTo(lastPushKeyId).limitToLast(limit);
+        Query myref2 = myRef.orderByKey().endAt(lastPushKeyId).limitToLast(limit);
         myref2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
