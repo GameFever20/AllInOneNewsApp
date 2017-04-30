@@ -58,6 +58,8 @@ public class NewsSourceFeedActivity extends AppCompatActivity {
          textView = (TextView)findViewById(R.id.newsSourceFeed_newsSummary_textView);
         textView.setText(newsSourceList.getNewsListArticle());
 
+        imageView = (ImageView) findViewById(R.id.newsSourceFeed_newsSourceImage_imageView);
+        imageView.setImageDrawable(NewsSourceList.resolveIconImage( this, newsSourceList.getSourceIndex()));
 
 
     }

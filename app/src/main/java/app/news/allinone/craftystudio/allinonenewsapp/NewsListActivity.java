@@ -327,6 +327,8 @@ public class NewsListActivity extends AppCompatActivity
         intent.putExtra("PushKeyId", newsMetaInfo.getNewsPushKeyId());
         intent.putExtra("NewsHeading", newsMetaInfo.getNewsHeading());
         intent.putExtra("NewsImageLocalPath", newsMetaInfo.getNewsImageLocalPath());
+        intent.putExtra("NewsTime" , newsMetaInfo.getNewsTime());
+        intent.putExtra("NewsSourceIndex",newsMetaInfo.getNewsSourceimageIndex());
         startActivity(intent);
     }
 
@@ -443,7 +445,7 @@ public class NewsListActivity extends AppCompatActivity
 
                 for (NewsMetaInfo newsMetaInfo : newsMetaInfoArrayList) {
 
-                    //newsMetaInfo.resolveNewsTimeString();
+                    newsMetaInfo.resolveNewsTimeString();
                     NewsListActivity.this.newsMetaInfoArrayList.add(newsMetaInfo);
                 }
 

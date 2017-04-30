@@ -76,6 +76,8 @@ public class NewsFeedActivity extends AppCompatActivity {
             newsMetaInfo.setNewsPushKeyId(intent.getStringExtra("PushKeyId"));
 
             newsMetaInfo.setNewsImageLocalPath(intent.getStringExtra("NewsImageLocalPath"));
+            newsMetaInfo.setNewsTime(intent.getLongExtra("NewsTime", 0L));
+            newsMetaInfo.setNewsSourceimageIndex(intent.getIntExtra("NewsSourceIndex",0));
 
             if (!newsMetaInfo.resolvenewsLocalImage()) {
                 fetchNewsInfo(false, false);
@@ -88,6 +90,10 @@ public class NewsFeedActivity extends AppCompatActivity {
 
             ImageView imageView = (ImageView) findViewById(R.id.newsFeed_newsImage_ImageView);
             imageView.setImageBitmap(newsMetaInfo.getNewsImage());
+
+             imageView = (ImageView) findViewById(R.id.newsFeed_newsSourceImage_ImageView);
+            imageView.setImageDrawable(NewsSourceList.resolveIconImage(this, newsMetaInfo.getNewsSourceimageIndex()));
+
         }
 
     }
@@ -151,14 +157,12 @@ public class NewsFeedActivity extends AppCompatActivity {
         textView.setText(newsInfo.getNewsSummary());
         textView = (TextView) findViewById(R.id.newsFeed_newsSource_textView);
         //textView.setText(newsInfo.getNewsSource());
-        textView.setText(NewsInfo.resolveDateString(newsInfo.getNewsTime()));
+        textView.setText(NewsInfo.resolveDateString(newsMetaInfo.getNewsTime()));
 
-        ImageView imageView = (ImageView) findViewById(R.id.newsFeed_newsSourceImage_ImageView);
-        imageView.setImageDrawable(NewsSourceList.resolveIconImage(this, newsMetaInfo.getNewsSourceimageIndex()));
 
         initializeRecyclerView();
 
-        initializeTweets();
+        //initializeTweets();
 
     }
 
@@ -169,7 +173,7 @@ public class NewsFeedActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(newsSourcesRecyclerAdapter);
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
@@ -265,6 +269,7 @@ public class NewsFeedActivity extends AppCompatActivity {
         // TODO: Base this Tweet ID on some data from elsewhere in your app
 
 
+
         if (newsInfo.getNewsTweetListHashMap() != null) {
             for (Long tweetId : newsInfo.getNewsTweetListHashMap().values()) {
 
@@ -283,6 +288,7 @@ public class NewsFeedActivity extends AppCompatActivity {
                 });
             }
         }
+
 
 
     }

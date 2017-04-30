@@ -54,6 +54,7 @@
                 android:layout_margin="8dp"
                 android:fontFamily="monospace"
                 android:text="Zee"
+                android:visibility="gone"
                 android:textAlignment="center" />
 
         </LinearLayout>

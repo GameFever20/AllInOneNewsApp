@@ -20,7 +20,7 @@ public class NewsInfo implements Parcelable {
     private String newsSource;
     private String newsCategory;
     private String newsDate;
-    private long newsTime;
+    private String newsTime;
     private String newsNotify;
     private String newsImageLink;
     private Bitmap newsImage;
@@ -30,21 +30,19 @@ public class NewsInfo implements Parcelable {
     ArrayList<NewsSourceList> newsSourceListArrayList;
     int newsSourceimageIndex = 0;
 
-
     private HashMap<String, Long> newsTweetListHashMap;
 
 
     public NewsInfo() {
     }
 
-    public long getNewsTime() {
+    public String getNewsTime() {
         return newsTime;
     }
 
-    public void setNewsTime(long newsTime) {
+    public void setNewsTime(String newsTime) {
         this.newsTime = newsTime;
     }
-
 
     public int getNewsSourceimageIndex() {
         return newsSourceimageIndex;
@@ -186,7 +184,7 @@ public class NewsInfo implements Parcelable {
         dest.writeString(newsSource);
         dest.writeString(newsCategory);
         dest.writeString(newsDate);
-        dest.writeLong(newsTime);
+        //dest.writeLong(newsTime);
         dest.writeParcelable(newsImage, 1);
         dest.writeString(newsNotify);
         dest.writeString(newsImageLink);
@@ -201,7 +199,7 @@ public class NewsInfo implements Parcelable {
         this.newsSource = in.readString();
         this.newsCategory = in.readString();
         this.newsDate = in.readString();
-        this.newsTime = in.readLong();
+        //this.newsTime = in.readLong();
         this.newsNotify = in.readString();
         this.newsImageLink = in.readString();
 

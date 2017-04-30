@@ -163,11 +163,11 @@ public class DatabaseHandlerFirebase {
 
 
                 NewsInfo newsInfo = dataSnapshot.getValue(NewsInfo.class);
-                databaseNewsListListner.onNewsInfo(newsInfo);
+
 
 
                 if (databaseNewsListListner != null) {
-
+                    databaseNewsListListner.onNewsInfo(newsInfo);
                 }
 
             }
