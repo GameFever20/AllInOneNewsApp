@@ -150,7 +150,11 @@ public class NewsFeedActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.newsFeed_newsSummary_textView);
         textView.setText(newsInfo.getNewsSummary());
         textView = (TextView) findViewById(R.id.newsFeed_newsSource_textView);
-        textView.setText(newsInfo.getNewsSource());
+        //textView.setText(newsInfo.getNewsSource());
+        textView.setText(NewsInfo.resolveDateString(newsInfo.getNewsTime()));
+
+        ImageView imageView = (ImageView) findViewById(R.id.newsFeed_newsSourceImage_ImageView);
+        imageView.setImageDrawable(NewsSourceList.resolveIconImage(this, newsMetaInfo.getNewsSourceimageIndex()));
 
         initializeRecyclerView();
 

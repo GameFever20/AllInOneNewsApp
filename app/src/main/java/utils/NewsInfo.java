@@ -20,19 +20,38 @@ public class NewsInfo implements Parcelable {
     private String newsSource;
     private String newsCategory;
     private String newsDate;
-    private String newsTime;
+    private long newsTime;
     private String newsNotify;
     private String newsImageLink;
     private Bitmap newsImage;
-    private HashMap<String , NewsSourceList> newsSourceListHashMap;
-    ArrayList<NewsSourceList> newsSourceListArrayList ;
+    private HashMap<String, NewsSourceList> newsSourceListHashMap;
 
 
+    ArrayList<NewsSourceList> newsSourceListArrayList;
+    int newsSourceimageIndex = 0;
 
-    private HashMap<String , Long> newsTweetListHashMap;
+
+    private HashMap<String, Long> newsTweetListHashMap;
 
 
     public NewsInfo() {
+    }
+
+    public long getNewsTime() {
+        return newsTime;
+    }
+
+    public void setNewsTime(long newsTime) {
+        this.newsTime = newsTime;
+    }
+
+
+    public int getNewsSourceimageIndex() {
+        return newsSourceimageIndex;
+    }
+
+    public void setNewsSourceimageIndex(int newsSourceimageIndex) {
+        this.newsSourceimageIndex = newsSourceimageIndex;
     }
 
     public HashMap<String, Long> getNewsTweetListHashMap() {
@@ -118,13 +137,6 @@ public class NewsInfo implements Parcelable {
         this.newsDate = newsDate;
     }
 
-    public String getNewsTime() {
-        return newsTime;
-    }
-
-    public void setNewsTime(String newsTime) {
-        this.newsTime = newsTime;
-    }
 
     public String getNewsNotify() {
         return newsNotify;
@@ -150,10 +162,10 @@ public class NewsInfo implements Parcelable {
         this.newsImage = newsImage;
     }
 
-    public void resolveHashmap(){
-        newsSourceListArrayList =new ArrayList<>();
-        if(this.newsSourceListHashMap != null){
-            for(NewsSourceList newsSourceList:newsSourceListHashMap.values() ){
+    public void resolveHashmap() {
+        newsSourceListArrayList = new ArrayList<>();
+        if (this.newsSourceListHashMap != null) {
+            for (NewsSourceList newsSourceList : newsSourceListHashMap.values()) {
                 newsSourceListArrayList.add(newsSourceList);
 
             }
@@ -174,7 +186,7 @@ public class NewsInfo implements Parcelable {
         dest.writeString(newsSource);
         dest.writeString(newsCategory);
         dest.writeString(newsDate);
-        dest.writeString(newsTime);
+        dest.writeLong(newsTime);
         dest.writeParcelable(newsImage, 1);
         dest.writeString(newsNotify);
         dest.writeString(newsImageLink);
@@ -189,7 +201,7 @@ public class NewsInfo implements Parcelable {
         this.newsSource = in.readString();
         this.newsCategory = in.readString();
         this.newsDate = in.readString();
-        this.newsTime = in.readString();
+        this.newsTime = in.readLong();
         this.newsNotify = in.readString();
         this.newsImageLink = in.readString();
 
@@ -210,7 +222,7 @@ public class NewsInfo implements Parcelable {
     };
 
 
-    public static  String resolveDateString( long newsTime){
+    public static String resolveDateString(long newsTime) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(newsTime);
 
@@ -224,37 +236,36 @@ public class NewsInfo implements Parcelable {
         int mCurrentMonth = currentTime.get(Calendar.MONTH);
         int mCurrentDay = currentTime.get(Calendar.DAY_OF_MONTH);
 
-        if (mYear == mCurrentYear){
-            if (mCurrentMonth == mMonth){
+        if (mYear == mCurrentYear) {
+            if (mCurrentMonth == mMonth) {
 
 
-
-                if(mCurrentDay -mDay== 0){
+                if (mCurrentDay - mDay == 0) {
                     return "Today";
-                }else if (mCurrentDay -mDay== 1){
+                } else if (mCurrentDay - mDay == 1) {
                     return "Yesterday";
-                }else if(mCurrentDay -mDay <7){
-                    return mCurrentDay -mDay+" days ago";
-                }else if (mCurrentDay -mDay <14){
+                } else if (mCurrentDay - mDay < 7) {
+                    return mCurrentDay - mDay + " days ago";
+                } else if (mCurrentDay - mDay < 14) {
                     return "1 week ago";
-                }else if (mCurrentDay -mDay <21){
+                } else if (mCurrentDay - mDay < 21) {
                     return "2 week ago";
-                }else if (mCurrentDay -mDay <28){
+                } else if (mCurrentDay - mDay < 28) {
                     return "3 week ago";
-                }else if (mCurrentDay -mDay <35){
+                } else if (mCurrentDay - mDay < 35) {
                     return "4 week ago";
                 }
 
 
-            }else{
-                if (mCurrentMonth -mMonth <12){
-                    return mCurrentMonth-mMonth +" month ago";
+            } else {
+                if (mCurrentMonth - mMonth < 12) {
+                    return mCurrentMonth - mMonth + " month ago";
                 }
 
             }
 
-        }else{
-            return mCurrentYear - mYear +" year ago";
+        } else {
+            return mCurrentYear - mYear + " year ago";
 
         }
 

@@ -17,15 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="0dp"
             app:cardElevation="16dp">
 
-            <ImageView
-                android:id="@+id/newsFeed_newsImage_ImageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="200dp"
-                android:scaleType="centerCrop" />
 
         </android.support.v7.widget.CardView>
 
@@ -35,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:minHeight="200dp"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="0dp"
             app:cardElevation="16dp">
 
             <LinearLayout
@@ -44,16 +38,40 @@
                 android:orientation="vertical"
                 android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/newsFeed_newsHeading_textView"
+                <ImageView
+                    android:id="@+id/newsFeed_newsImage_ImageView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="serif"
-                    android:text="News Heading"
-                    android:textAlignment="center"
-                    android:textColor="@color/descriptionColor"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="16dp"
+                    android:minHeight="200dp"
+                    android:scaleType="centerCrop" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/newsFeed_newsSourceImage_ImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/ic_launcher" />
+
+
+                    <TextView
+                        android:id="@+id/newsFeed_newsHeading_textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="serif"
+                        android:text="News Heading"
+                        android:textColor="@color/descriptionColor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
@@ -66,19 +84,22 @@
 
 
                 <TextView
+                    android:id="@+id/newsFeed_newsSource_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:fontFamily="monospace"
+                    android:textAlignment="textEnd"
+
+                    />
+
+
+                <TextView
                     android:id="@+id/newsFeed_newsSummary_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:textSize="16sp"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/newsFeed_newsSource_textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textAlignment="center" />
+                    android:textSize="16sp" />
 
 
             </LinearLayout>
@@ -89,7 +110,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
-            android:minHeight="200dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="16dp">
 
@@ -102,48 +122,45 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="News Sources "
-                    android:textStyle="bold"
                     android:fontFamily="serif"
+                    android:text="News Sources "
                     android:textAlignment="center"
                     android:textColor="@color/descriptionColor"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_margin="8dp"
                     android:layout_marginBottom="8dp"
                     app:cardBackgroundColor="@color/descriptionColor"
-                    app:cardElevation="0dp"
-                    android:layout_margin="8dp">
+                    app:cardElevation="0dp">
 
                 </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/newsFeed_newsSourceList_recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-
-                    >
-
-                </android.support.v7.widget.RecyclerView>
 
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/newsFeed_newsSourceList_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+
+            >
+
+        </android.support.v7.widget.RecyclerView>
 
 
         <LinearLayout
+            android:id="@+id/my_tweet_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/my_tweet_layout"
-            >
+            android:orientation="vertical">
 
         </LinearLayout>
-
-
 
 
     </LinearLayout>
