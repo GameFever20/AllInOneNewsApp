@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import utils.NewsInfo;
 import utils.NewsSourceList;
 
 public class NewsSourceFeedActivity extends AppCompatActivity {
@@ -45,7 +46,13 @@ public class NewsSourceFeedActivity extends AppCompatActivity {
         newsSourceList.setNewsListArticle(intent.getStringExtra("NewsArticle"));
         newsSourceList.setSourceIndex(intent.getIntExtra("NewsSourceIndex" ,0));
         String imageLocalPath = intent.getStringExtra("NewsImageLocalPath");
+
         initializeActivity( newsSourceList , imageLocalPath);
+
+
+        TextView textView =(TextView)findViewById(R.id.newsSourceFeed_newsSource_textView);
+        textView.setText(NewsInfo.resolveDateString(intent.getLongExtra("NewsTime", 0L)));
+
     }
 
     private void initializeActivity(NewsSourceList newsSourceList, String imageLocalPath) {

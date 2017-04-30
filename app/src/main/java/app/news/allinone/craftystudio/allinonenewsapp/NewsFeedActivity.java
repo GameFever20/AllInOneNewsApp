@@ -216,6 +216,7 @@ public class NewsFeedActivity extends AppCompatActivity {
         intent.putExtra("NewsArticle", newsInfo.getNewsSourceListArrayList().get(position).getNewsListArticle());
         intent.putExtra("NewsSourceIndex", newsInfo.getNewsSourceListArrayList().get(position).getSourceIndex());
         intent.putExtra("NewsImageLocalPath", newsMetaInfo.getNewsImageLocalPath());
+        intent.putExtra("NewsTime" , newsMetaInfo.getNewsTime());
 
 
         startActivity(intent);
