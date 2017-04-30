@@ -307,6 +307,7 @@ public class NewsListActivity extends AppCompatActivity
             public void ongetNewsListMore(ArrayList<NewsMetaInfo> newsMetaInfoArrayListMore) {
                 newsMetaInfoArrayListMore.remove(newsMetaInfoArrayListMore.size() - 1);
                 for (int i = newsMetaInfoArrayListMore.size() - 1; i >= 0; i--) {
+                    newsMetaInfoArrayListMore.get(i).setNewsTimeString( NewsInfo.resolveDateString(newsMetaInfoArrayListMore.get(i).getNewsTime()));
                     NewsListActivity.this.newsMetaInfoArrayList.add(newsMetaInfoArrayListMore.get(i));
 
                 }

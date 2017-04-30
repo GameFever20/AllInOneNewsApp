@@ -57,7 +57,7 @@ public class NewsListRecyclerAdapter extends RecyclerView.Adapter<NewsListRecycl
         NewsMetaInfo newsMetaInfo = newsMetaInfoArrayList.get(position);
         holder.newsHeadingTextView.setText(newsMetaInfo.getNewsHeading());
         holder.newsDateTextView.setText(newsMetaInfo.getNewsTimeString());
-        holder.newsCategoryTextView.setText(newsMetaInfo.getNewsSource());
+        //holder.newsCategoryTextView.setText(newsMetaInfo.getNewsSource());
         holder.newsImageView.setImageBitmap(newsMetaInfo.getNewsImage());
 
         holder.newsSourceImageView.setImageDrawable(NewsSourceList.resolveIconImage(context ,newsMetaInfo.getNewsSourceimageIndex()));

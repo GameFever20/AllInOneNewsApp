@@ -98,7 +98,7 @@ public class NewsMetaInfo {
     }
 
     public void resolveNewsTimeString(){
-        NewsInfo.resolveDateString(getNewsTime());
+        this.setNewsTimeString( NewsInfo.resolveDateString(getNewsTime()));
     }
 
     public boolean resolvenewsLocalImage() {

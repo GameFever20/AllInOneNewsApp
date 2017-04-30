@@ -162,7 +162,7 @@ public class NewsFeedActivity extends AppCompatActivity {
 
         initializeRecyclerView();
 
-        //initializeTweets();
+        initializeTweets();
 
     }
 
