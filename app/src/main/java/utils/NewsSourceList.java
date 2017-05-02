@@ -14,12 +14,21 @@ public class NewsSourceList {
 
 
     int sourceIndex = 0;
+    String newsSourceShort="";
 
 
     boolean isExpanded = false;
 
 
     public NewsSourceList() {
+    }
+
+    public String getNewsSourceShort() {
+        return newsSourceShort;
+    }
+
+    public void setNewsSourceShort(String newsSourceShort) {
+        this.newsSourceShort = newsSourceShort;
     }
 
     public String getNewsListSource() {

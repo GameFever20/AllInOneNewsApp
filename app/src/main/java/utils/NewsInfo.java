@@ -31,9 +31,17 @@ public class NewsInfo implements Parcelable {
     int newsSourceimageIndex = 0;
 
     private HashMap<String, Long> newsTweetListHashMap;
-
+    String newsSourceShort="";
 
     public NewsInfo() {
+    }
+
+    public String getNewsSourceShort() {
+        return newsSourceShort;
+    }
+
+    public void setNewsSourceShort(String newsSourceShort) {
+        this.newsSourceShort = newsSourceShort;
     }
 
     public String getNewsTime() {

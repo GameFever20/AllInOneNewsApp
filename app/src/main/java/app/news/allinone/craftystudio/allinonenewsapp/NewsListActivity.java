@@ -1,5 +1,6 @@
 package app.news.allinone.craftystudio.allinonenewsapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -68,6 +69,7 @@ public class NewsListActivity extends AppCompatActivity
     boolean isOpenByDynamicLink = false;
     boolean isActivityInitialized = false;
     GoogleApiClient mGoogleApiClient = null;
+    ProgressDialog pd;
 
     @Override
     protected void onStart() {
@@ -209,6 +211,11 @@ public class NewsListActivity extends AppCompatActivity
 
 
         resolveIntent();
+
+          pd = new ProgressDialog(NewsListActivity.this);
+        pd.setMessage("Uploading Post please Wait");
+        pd.show();
+
 
     }
 
@@ -449,6 +456,8 @@ public class NewsListActivity extends AppCompatActivity
                     newsMetaInfo.resolveNewsTimeString();
                     NewsListActivity.this.newsMetaInfoArrayList.add(newsMetaInfo);
                 }
+
+                pd.dismiss();
 
                 newsListRecyclerAdapter.notifyDataSetChanged();
 

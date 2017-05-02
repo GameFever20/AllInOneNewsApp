@@ -20,8 +20,17 @@ public class NewsMetaInfo {
 
 
     String newsTimeString ="";
+    String newsSourceShort="";
 
     public NewsMetaInfo() {
+    }
+
+    public String getNewsSourceShort() {
+        return newsSourceShort;
+    }
+
+    public void setNewsSourceShort(String newsSourceShort) {
+        this.newsSourceShort = newsSourceShort;
     }
 
     public long getNewsTime() {

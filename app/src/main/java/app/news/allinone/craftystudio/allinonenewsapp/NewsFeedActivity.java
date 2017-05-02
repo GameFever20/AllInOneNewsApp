@@ -91,8 +91,8 @@ public class NewsFeedActivity extends AppCompatActivity {
             ImageView imageView = (ImageView) findViewById(R.id.newsFeed_newsImage_ImageView);
             imageView.setImageBitmap(newsMetaInfo.getNewsImage());
 
-             imageView = (ImageView) findViewById(R.id.newsFeed_newsSourceImage_ImageView);
-            imageView.setImageDrawable(NewsSourceList.resolveIconImage(this, newsMetaInfo.getNewsSourceimageIndex()));
+             //imageView = (ImageView) findViewById(R.id.newsFeed_newsSourceImage_ImageView);
+            //imageView.setImageDrawable(NewsSourceList.resolveIconImage(this, newsMetaInfo.getNewsSourceimageIndex()));
 
         }
 
@@ -157,8 +157,10 @@ public class NewsFeedActivity extends AppCompatActivity {
         textView.setText(newsInfo.getNewsSummary());
         textView = (TextView) findViewById(R.id.newsFeed_newsSource_textView);
         //textView.setText(newsInfo.getNewsSource());
-        textView.setText(NewsInfo.resolveDateString(newsMetaInfo.getNewsTime()));
+        textView.setText(newsInfo.getNewsSource()+"        " +NewsInfo.resolveDateString(newsMetaInfo.getNewsTime()));
 
+        textView=(TextView)findViewById(R.id.newsFeed_newsSourceshort_textView);
+        textView.setText(newsInfo.getNewsSourceShort());
 
         initializeRecyclerView();
 
@@ -217,6 +219,10 @@ public class NewsFeedActivity extends AppCompatActivity {
         intent.putExtra("NewsSourceIndex", newsInfo.getNewsSourceListArrayList().get(position).getSourceIndex());
         intent.putExtra("NewsImageLocalPath", newsMetaInfo.getNewsImageLocalPath());
         intent.putExtra("NewsTime" , newsMetaInfo.getNewsTime());
+        intent.putExtra("NewsSourceShort" , newsInfo.getNewsSourceListArrayList().get(position).getNewsSourceShort());
+        intent.putExtra("NewsSource" , newsInfo.getNewsSourceListArrayList().get(position).getNewsListSource());
+
+
 
 
         startActivity(intent);
@@ -279,7 +285,14 @@ public class NewsFeedActivity extends AppCompatActivity {
                     @Override
                     public void success(Result<Tweet> result) {
                         TweetView tweetView = new TweetView(NewsFeedActivity.this, result.data);
-                        myLayout.addView(tweetView);
+
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                        layoutParams.setMargins(30, 20, 30, 20);
+
+
+                        myLayout.addView(tweetView ,layoutParams);
                     }
 
                     @Override

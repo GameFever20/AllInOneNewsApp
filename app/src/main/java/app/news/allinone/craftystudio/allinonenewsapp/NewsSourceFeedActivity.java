@@ -47,11 +47,17 @@ public class NewsSourceFeedActivity extends AppCompatActivity {
         newsSourceList.setSourceIndex(intent.getIntExtra("NewsSourceIndex" ,0));
         String imageLocalPath = intent.getStringExtra("NewsImageLocalPath");
 
+        newsSourceList.setNewsListSource(intent.getStringExtra("NewsSource"));
+        newsSourceList.setNewsSourceShort(intent.getStringExtra("NewsSourceShort"));
+
+
+
+
         initializeActivity( newsSourceList , imageLocalPath);
 
 
         TextView textView =(TextView)findViewById(R.id.newsSourceFeed_newsSource_textView);
-        textView.setText(NewsInfo.resolveDateString(intent.getLongExtra("NewsTime", 0L)));
+        textView.setText(newsSourceList.getNewsListSource()+"      "+NewsInfo.resolveDateString(intent.getLongExtra("NewsTime", 0L)));
 
     }
 
@@ -65,8 +71,13 @@ public class NewsSourceFeedActivity extends AppCompatActivity {
          textView = (TextView)findViewById(R.id.newsSourceFeed_newsSummary_textView);
         textView.setText(newsSourceList.getNewsListArticle());
 
-        imageView = (ImageView) findViewById(R.id.newsSourceFeed_newsSourceImage_imageView);
-        imageView.setImageDrawable(NewsSourceList.resolveIconImage( this, newsSourceList.getSourceIndex()));
+        textView = (TextView)findViewById(R.id.newsSourceFeed_newsSourceshort_textView);
+        textView.setText(newsSourceList.getNewsSourceShort());
+
+
+
+        //imageView = (ImageView) findViewById(R.id.newsSourceFeed_newsSourceImage_imageView);
+        //imageView.setImageDrawable(NewsSourceList.resolveIconImage( this, newsSourceList.getSourceIndex()));
 
 
     }

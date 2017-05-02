@@ -26,7 +26,7 @@ public class NewsSourcesRecyclerAdapter extends RecyclerView.Adapter<NewsSources
     Context context;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView newsHeadingTextView, newsSourceTextView, newsSummaryTextView;
+        public TextView newsHeadingTextView, newsSourceTextView, newsSummaryTextView ,newsSourceShortTextview;
         public ImageView newsSourceImageView;
 
         public MyViewHolder(View view) {
@@ -35,6 +35,8 @@ public class NewsSourcesRecyclerAdapter extends RecyclerView.Adapter<NewsSources
             newsSourceTextView = (TextView) view.findViewById(R.id.newsSource_row_source_textView);
             newsSourceImageView = (ImageView) view.findViewById(R.id.newsSource_row_sourceImage_imageView);
             newsSummaryTextView = (TextView) view.findViewById(R.id.newsSource_row_newsSummary_textView);
+            newsSourceShortTextview = (TextView) view.findViewById(R.id.newsSource_row_newsSourceshort_textView);
+
 
         }
     }
@@ -68,7 +70,9 @@ public class NewsSourcesRecyclerAdapter extends RecyclerView.Adapter<NewsSources
         }
 
 
-        holder.newsSourceImageView.setImageDrawable(NewsSourceList.resolveIconImage(context ,newsSourceList.getSourceIndex()));
+        holder.newsSourceShortTextview.setText(newsSourceList.getNewsSourceShort());
+        //holder.newsSourceImageView.setImageDrawable(NewsSourceList.resolveIconImage(context ,newsSourceList.getSourceIndex()));
+
 
 
 
