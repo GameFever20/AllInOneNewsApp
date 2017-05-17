@@ -157,7 +157,10 @@ public class NewsFeedActivity extends AppCompatActivity {
         textView.setText(newsInfo.getNewsSummary());
         textView = (TextView) findViewById(R.id.newsFeed_newsSource_textView);
         //textView.setText(newsInfo.getNewsSource());
-        textView.setText(newsInfo.getNewsSource()+"        " +NewsInfo.resolveDateString(newsMetaInfo.getNewsTime()));
+        textView.setText(newsInfo.getNewsSource());
+
+        textView=(TextView)findViewById(R.id.newsFeed_newsDate_textView) ;
+        textView.setText(NewsInfo.resolveDateString(newsMetaInfo.getNewsTime()));
 
         textView=(TextView)findViewById(R.id.newsFeed_newsSourceshort_textView);
         textView.setText(newsInfo.getNewsSourceShort());
@@ -240,7 +243,7 @@ public class NewsFeedActivity extends AppCompatActivity {
         String utmCampaign = getString(R.string.utm_campaign);
         String utmMedium = getString(R.string.utm_medium);
 
-        String url = "https://" + appCode + ".app.goo.gl/?link=https://AllInOneNews.com/"
+        /*String url = "https://" + appCode + ".app.goo.gl/?link=https://AllInOneNews.com/"
                 + newsMetaInfo.getNewsPushKeyId()
                 + "&apn=" +
                 packageName + "&st=" +
@@ -250,7 +253,11 @@ public class NewsFeedActivity extends AppCompatActivity {
                 utmSource + "&utm_medium=" +
                 utmMedium + "&utm_campaign=" +
                 utmCampaign;
-
+*/
+        String url = "https://" + appCode + ".app.goo.gl/?link=https://AllInOneNews.com/"
+                + newsMetaInfo.getNewsPushKeyId()
+                + "&apn=" +
+                packageName ;
         // Toast.makeText(this, "Shared an article " + url, Toast.LENGTH_SHORT).show();
 
         url = url.replaceAll(" ", "+");
@@ -289,7 +296,7 @@ public class NewsFeedActivity extends AppCompatActivity {
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                        layoutParams.setMargins(30, 20, 30, 20);
+                        layoutParams.setMargins(16, 8, 16, 8);
 
 
                         myLayout.addView(tweetView ,layoutParams);
