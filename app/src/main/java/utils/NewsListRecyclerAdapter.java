@@ -23,14 +23,15 @@ public class NewsListRecyclerAdapter extends RecyclerView.Adapter<NewsListRecycl
     Context context;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView newsHeadingTextView, newsDateTextView, newsCategoryTextView;
+        public TextView newsHeadingTextView, newsDateTextView, newsCategoryTextView,newsSourceShort;
         public ImageView newsImageView ,newsSourceImageView;
 
         public MyViewHolder(View view) {
             super(view);
             newsHeadingTextView = (TextView) view.findViewById(R.id.newslist_row_heading_textView);
             newsDateTextView = (TextView) view.findViewById(R.id.newslist_row_date_textView);
-            newsCategoryTextView = (TextView) view.findViewById(R.id.newsList_row_newsSourceshort_textView);
+            newsCategoryTextView = (TextView) view.findViewById(R.id.newslist_row_category_textView);
+            newsSourceShort =(TextView)view.findViewById(R.id.newsList_row_newsSourceshort_textView) ;
             newsImageView = (ImageView)view.findViewById(R.id.newslist_row_imageView);
             newsSourceImageView =(ImageView)view.findViewById(R.id.newslist_row_newsSource_imageView);
 
@@ -56,11 +57,11 @@ public class NewsListRecyclerAdapter extends RecyclerView.Adapter<NewsListRecycl
     public void onBindViewHolder(MyViewHolder holder, int position) {
         NewsMetaInfo newsMetaInfo = newsMetaInfoArrayList.get(position);
         holder.newsHeadingTextView.setText(newsMetaInfo.getNewsHeading());
-        holder.newsDateTextView.setText(newsMetaInfo.getNewsSource()+"      "+newsMetaInfo.getNewsTimeString());
-        //holder.newsCategoryTextView.setText(newsMetaInfo.getNewsSource());
+        holder.newsDateTextView.setText(newsMetaInfo.getNewsTimeString());
+        holder.newsCategoryTextView.setText(newsMetaInfo.getNewsSource());
         holder.newsImageView.setImageBitmap(newsMetaInfo.getNewsImage());
 
-        holder.newsCategoryTextView.setText(newsMetaInfo.getNewsSourceShort());
+        holder.newsSourceShort.setText(newsMetaInfo.getNewsSourceShort());
         //holder.newsSourceImageView.setImageDrawable(NewsSourceList.resolveIconImage(context ,newsMetaInfo.getNewsSourceimageIndex()));
 
     }

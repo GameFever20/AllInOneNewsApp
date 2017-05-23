@@ -6,4 +6,6 @@
     <color name="highlight_text_color">#ffffff</color>
     <color name="headingColor">#000000</color>
     <color name="descriptionColor">#545353</color>
+    <color name="black">#000000</color>
+    <color name="lineColor">#9b9b9b</color>
 </resources>

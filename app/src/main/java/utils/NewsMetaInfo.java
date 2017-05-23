@@ -22,7 +22,17 @@ public class NewsMetaInfo {
     String newsTimeString ="";
     String newsSourceShort="";
 
+    boolean newsNotification =false;
+
     public NewsMetaInfo() {
+    }
+
+    public boolean isNewsNotification() {
+        return newsNotification;
+    }
+
+    public void setNewsNotification(boolean newsNotification) {
+        this.newsNotification = newsNotification;
     }
 
     public String getNewsSourceShort() {

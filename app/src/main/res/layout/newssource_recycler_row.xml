@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
 
-    android:layout_margin="8dp"
+    android:layout_margin="4dp"
     app:cardElevation="6dp"
     app:cardCornerRadius="0dp"
     >
@@ -16,8 +16,20 @@
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/newsSource_row_source_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:fontFamily="monospace"
+            android:text="Zee"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textAlignment="center" />
 
-    <LinearLayout
+
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -38,7 +50,13 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center_vertical"
-            android:layout_margin="4dp"
+           style="@style/sourcecard_style"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="24dp"
             app:cardBackgroundColor="@color/colorPrimary">
 
             <TextView
@@ -64,11 +82,14 @@
                 android:id="@+id/newsSource_row_heading_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+
+                android:layout_marginTop="8dp"
                 android:fontFamily="serif"
                 android:text="ndsjknc"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="16sp"
+                android:maxLines="5"
+                android:textColor="@color/black"
+                />
 
             <TextView
                 android:id="@+id/newsSource_row_newsSummary_textView"
@@ -85,14 +106,6 @@
 
     </LinearLayout>
 
-        <TextView
-            android:id="@+id/newsSource_row_source_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:fontFamily="monospace"
-            android:text="Zee"
-            android:textAlignment="center" />
 
 
     </LinearLayout>

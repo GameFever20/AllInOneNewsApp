@@ -183,6 +183,9 @@ public class NewsListActivity extends AppCompatActivity
                                     Log.d("NewsList", "onResult: " + deepLink);
 
                                     int endIndex = deepLink.indexOf("?");
+                                    if(endIndex == -1){
+                                        endIndex=deepLink.length();
+                                    }
                                     String pushKeyId = deepLink.substring(25, endIndex);
                                     Log.d("NewsList", "onResult: " + pushKeyId);
                                     openNewsFeedActivity(pushKeyId);
@@ -213,7 +216,7 @@ public class NewsListActivity extends AppCompatActivity
         resolveIntent();
 
           pd = new ProgressDialog(NewsListActivity.this);
-        pd.setMessage("Uploading Post please Wait");
+        pd.setMessage("Getting News...");
         pd.show();
 
 
@@ -241,7 +244,7 @@ public class NewsListActivity extends AppCompatActivity
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
         recyclerView.setAdapter(newsListRecyclerAdapter);
 

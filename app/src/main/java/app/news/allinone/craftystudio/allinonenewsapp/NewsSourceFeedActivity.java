@@ -57,7 +57,7 @@ public class NewsSourceFeedActivity extends AppCompatActivity {
 
 
         TextView textView =(TextView)findViewById(R.id.newsSourceFeed_newsSource_textView);
-        textView.setText(newsSourceList.getNewsListSource()+"      "+NewsInfo.resolveDateString(intent.getLongExtra("NewsTime", 0L)));
+        textView.setText(newsSourceList.getNewsListSource());
 
     }
 
