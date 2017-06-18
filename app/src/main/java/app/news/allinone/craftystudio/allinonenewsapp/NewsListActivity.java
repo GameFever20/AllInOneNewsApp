@@ -69,7 +69,7 @@ public class NewsListActivity extends AppCompatActivity
     boolean isOpenByDynamicLink = false;
     boolean isActivityInitialized = false;
     GoogleApiClient mGoogleApiClient = null;
-    ProgressDialog pd;
+    //ProgressDialog pd;
 
     @Override
     protected void onStart() {
@@ -119,7 +119,7 @@ public class NewsListActivity extends AppCompatActivity
         if (isOpenByDynamicLink) {
             Log.d("NewsList", "getInvitation: no deep link found.");
             initiaizeNewsInfoArrayList();
-            initializeRecyclerView();
+
             isOpenByDynamicLink = false;
 
         }
@@ -132,7 +132,10 @@ public class NewsListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
-        setContentView(R.layout.activity_news_list);
+        //setContentView(R.layout.activity_news_list);
+        setContentView(R.layout.splashscreen);
+
+/*
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -154,6 +157,7 @@ public class NewsListActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+*/
 
 
         // Build GoogleApiClient with AppInvite API for receiving deep links
@@ -199,7 +203,7 @@ public class NewsListActivity extends AppCompatActivity
                                 } else {
                                     Log.d("NewsList", "getInvitation: no deep link found.");
                                     initiaizeNewsInfoArrayList();
-                                    initializeRecyclerView();
+
 
                                     isActivityInitialized = true;
 
@@ -215,9 +219,9 @@ public class NewsListActivity extends AppCompatActivity
 
         resolveIntent();
 
-          pd = new ProgressDialog(NewsListActivity.this);
+        /*  pd = new ProgressDialog(NewsListActivity.this);
         pd.setMessage("Getting News...");
-        pd.show();
+        pd.show();*/
 
 
     }
@@ -415,7 +419,7 @@ public class NewsListActivity extends AppCompatActivity
     private void onSuggestion() {
         Intent intent = new Intent(Intent.ACTION_SEND);
 
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"acraftystudio@gmail.com"});
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"beatstartup@gmail.com"});
         intent.putExtra(Intent.EXTRA_SUBJECT, "Suggestion for Editorial App");
         intent.putExtra(Intent.EXTRA_TEXT, "Your suggestion here \n");
 
@@ -432,7 +436,7 @@ public class NewsListActivity extends AppCompatActivity
         sharingIntent.setType("text/plain");
 
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Download the app and Start reading");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=app.news.allinone.craftystudio.allinonenewsapp");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "https://goo.gl/rxGJz6");
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 
@@ -454,13 +458,16 @@ public class NewsListActivity extends AppCompatActivity
             public void onNewsList(ArrayList<NewsMetaInfo> newsMetaInfoArrayList) {
 
 
+                initializeActivity();
+                initializeRecyclerView();
+
                 for (NewsMetaInfo newsMetaInfo : newsMetaInfoArrayList) {
 
                     newsMetaInfo.resolveNewsTimeString();
                     NewsListActivity.this.newsMetaInfoArrayList.add(newsMetaInfo);
                 }
 
-                pd.dismiss();
+                //pd.dismiss();
 
                 newsListRecyclerAdapter.notifyDataSetChanged();
 
@@ -491,6 +498,35 @@ public class NewsListActivity extends AppCompatActivity
 
             }
         });
+
+
+    }
+
+    private void initializeActivity() {
+        setContentView(R.layout.activity_news_list);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+            }
+        });
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
 
 
     }

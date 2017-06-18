@@ -31,7 +31,7 @@ public class NewsInfo implements Parcelable {
     int newsSourceimageIndex = 0;
 
     private HashMap<String, Long> newsTweetListHashMap;
-    String newsSourceShort="";
+    String newsSourceShort = "";
 
     public NewsInfo() {
     }
@@ -227,6 +227,7 @@ public class NewsInfo implements Parcelable {
         }
     };
 
+/*
 
     public static String resolveDateString(long newsTime) {
         Calendar calendar = Calendar.getInstance();
@@ -278,6 +279,64 @@ public class NewsInfo implements Parcelable {
         return "";
 
     }
+*/
+
+    public static String resolveDateString(long newsTime) {
+        Calendar calendar = Calendar.getInstance();
+
+
+        long currenttime = calendar.getTimeInMillis();
+
+
+        //calculate difference in time
+        //long timeDifference = (currenttime - newsTime);
+
+        if ((currenttime - newsTime) <= 0 || newsTime <= 1493013649175l) {
+            return "";
+        }
+
+        long numberOfHour = (currenttime - newsTime) / 3600000;
+        if (numberOfHour == 0) {
+            return "less than hour ago";
+        } else if (numberOfHour < 24) {
+            return String.valueOf(numberOfHour) + " hour ago";
+        } else {
+
+            long numberOfDays = numberOfHour / 24;
+
+            if (numberOfDays < 7) {
+                return String.valueOf(numberOfDays) + " day ago";
+            } else {
+
+                long numberOfWeek = numberOfDays / 7;
+                if (numberOfWeek <= 4) {
+                    return String.valueOf(numberOfWeek) + " week ago";
+                } else {
+
+                    long numberOfMonth = numberOfWeek / 4;
+                    if (numberOfMonth <= 12) {
+                        return String.valueOf(numberOfMonth) + " month ago";
+                    } else {
+
+                        long numberOfYear = numberOfMonth / 12;
+
+                        return String.valueOf(numberOfYear) + " year ago";
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+    }
+
 
 }
+
+
+
+
 

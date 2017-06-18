@@ -1,6 +1,9 @@
 package app.news.allinone.craftystudio.allinonenewsapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -25,6 +28,20 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.tweetui.TweetUtils;
 import com.twitter.sdk.android.tweetui.TweetView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +53,7 @@ import utils.NewsMetaInfo;
 import utils.NewsSourceList;
 import utils.NewsSourcesRecyclerAdapter;
 import utils.RecyclerTouchListener;
+import utils.UrlShortner;
 
 public class NewsFeedActivity extends AppCompatActivity {
     public NewsMetaInfo newsMetaInfo = new NewsMetaInfo();
@@ -77,7 +95,7 @@ public class NewsFeedActivity extends AppCompatActivity {
 
             newsMetaInfo.setNewsImageLocalPath(intent.getStringExtra("NewsImageLocalPath"));
             newsMetaInfo.setNewsTime(intent.getLongExtra("NewsTime", 0L));
-            newsMetaInfo.setNewsSourceimageIndex(intent.getIntExtra("NewsSourceIndex",0));
+            newsMetaInfo.setNewsSourceimageIndex(intent.getIntExtra("NewsSourceIndex", 0));
 
             if (!newsMetaInfo.resolvenewsLocalImage()) {
                 fetchNewsInfo(false, false);
@@ -91,7 +109,7 @@ public class NewsFeedActivity extends AppCompatActivity {
             ImageView imageView = (ImageView) findViewById(R.id.newsFeed_newsImage_ImageView);
             imageView.setImageBitmap(newsMetaInfo.getNewsImage());
 
-             //imageView = (ImageView) findViewById(R.id.newsFeed_newsSourceImage_ImageView);
+            //imageView = (ImageView) findViewById(R.id.newsFeed_newsSourceImage_ImageView);
             //imageView.setImageDrawable(NewsSourceList.resolveIconImage(this, newsMetaInfo.getNewsSourceimageIndex()));
 
         }
@@ -159,10 +177,10 @@ public class NewsFeedActivity extends AppCompatActivity {
         //textView.setText(newsInfo.getNewsSource());
         textView.setText(newsInfo.getNewsSource());
 
-        textView=(TextView)findViewById(R.id.newsFeed_newsDate_textView) ;
+        textView = (TextView) findViewById(R.id.newsFeed_newsDate_textView);
         textView.setText(NewsInfo.resolveDateString(newsMetaInfo.getNewsTime()));
 
-        textView=(TextView)findViewById(R.id.newsFeed_newsSourceshort_textView);
+        textView = (TextView) findViewById(R.id.newsFeed_newsSourceshort_textView);
         textView.setText(newsInfo.getNewsSourceShort());
 
         initializeRecyclerView();
@@ -221,11 +239,9 @@ public class NewsFeedActivity extends AppCompatActivity {
         intent.putExtra("NewsArticle", newsInfo.getNewsSourceListArrayList().get(position).getNewsListArticle());
         intent.putExtra("NewsSourceIndex", newsInfo.getNewsSourceListArrayList().get(position).getSourceIndex());
         intent.putExtra("NewsImageLocalPath", newsMetaInfo.getNewsImageLocalPath());
-        intent.putExtra("NewsTime" , newsMetaInfo.getNewsTime());
-        intent.putExtra("NewsSourceShort" , newsInfo.getNewsSourceListArrayList().get(position).getNewsSourceShort());
-        intent.putExtra("NewsSource" , newsInfo.getNewsSourceListArrayList().get(position).getNewsListSource());
-
-
+        intent.putExtra("NewsTime", newsMetaInfo.getNewsTime());
+        intent.putExtra("NewsSourceShort", newsInfo.getNewsSourceListArrayList().get(position).getNewsSourceShort());
+        intent.putExtra("NewsSource", newsInfo.getNewsSourceListArrayList().get(position).getNewsListSource());
 
 
         startActivity(intent);
@@ -243,7 +259,7 @@ public class NewsFeedActivity extends AppCompatActivity {
         String utmCampaign = getString(R.string.utm_campaign);
         String utmMedium = getString(R.string.utm_medium);
 
-        /*String url = "https://" + appCode + ".app.goo.gl/?link=https://AllInOneNews.com/"
+        String url = "https://" + appCode + ".app.goo.gl/?link=https://AllInOneNews.com/"
                 + newsMetaInfo.getNewsPushKeyId()
                 + "&apn=" +
                 packageName + "&st=" +
@@ -253,22 +269,58 @@ public class NewsFeedActivity extends AppCompatActivity {
                 utmSource + "&utm_medium=" +
                 utmMedium + "&utm_campaign=" +
                 utmCampaign;
-*/
-        String url = "https://" + appCode + ".app.goo.gl/?link=https://AllInOneNews.com/"
+
+        /*String url = "https://" + appCode + ".app.goo.gl/?link=https://AllInOneNews.com/"
                 + newsMetaInfo.getNewsPushKeyId()
                 + "&apn=" +
-                packageName ;
-        // Toast.makeText(this, "Shared an article " + url, Toast.LENGTH_SHORT).show();
+                packageName;
+       */ // Toast.makeText(this, "Shared an article " + url, Toast.LENGTH_SHORT).show();
 
         url = url.replaceAll(" ", "+");
+        url = url.replace("\n" ,"");
 
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+       /* Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
 
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Download the app and Start reading");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, url + " \nRead More ");
         startActivity(Intent.createChooser(sharingIntent, "Share Editorial via"));
+        */
 
+        final ProgressDialog pd = new ProgressDialog(NewsFeedActivity.this);
+        pd.setMessage("Creating link ...");
+        pd.show();
+
+        new UrlShortner(url, new UrlShortner.UrlShortnerListner() {
+
+
+            @Override
+            public void onCancel(String longUrl) {
+                pd.dismiss();
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Download the app and Start reading");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, longUrl + " \nRead More ");
+                startActivity(Intent.createChooser(sharingIntent, "Share News via"));
+
+
+            }
+
+            @Override
+            public void onUrlShort(String shortUrl, String longUrl) {
+                pd.dismiss();
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+
+                //sharingIntent.putExtra(Intent.EXTRA_STREAM, newsMetaInfo.getNewsImageLocalPath());
+
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Download the app and Start reading");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shortUrl + " \nRead More ");
+                startActivity(Intent.createChooser(sharingIntent, "Share News via"));
+
+            }
+        }).execute("");
 
     }
 
@@ -281,7 +333,6 @@ public class NewsFeedActivity extends AppCompatActivity {
         // TODO: Use a more specific parent
 
         // TODO: Base this Tweet ID on some data from elsewhere in your app
-
 
 
         if (newsInfo.getNewsTweetListHashMap() != null) {
@@ -299,7 +350,7 @@ public class NewsFeedActivity extends AppCompatActivity {
                         layoutParams.setMargins(16, 8, 16, 8);
 
 
-                        myLayout.addView(tweetView ,layoutParams);
+                        myLayout.addView(tweetView, layoutParams);
                     }
 
                     @Override
@@ -311,7 +362,8 @@ public class NewsFeedActivity extends AppCompatActivity {
         }
 
 
-
     }
+
+
 
 }

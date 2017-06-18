@@ -184,26 +184,18 @@
 
 
         <!--Start other news article -->
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            app:cardCornerRadius="0dp"
-            app:cardElevation="6dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Related News"
-                android:textColor="@color/colorPrimary"
+                android:text="Read this NEWS from other news channels below"
+                android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="16sp"
-                android:textAlignment="center"
+                android:textSize="14sp"
                 android:layout_margin="4dp"
 
                 />
 
-        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/newsFeed_newsSourceList_recyclerView"
@@ -217,26 +209,18 @@
         <!--end other news article -->
 
         <!--start tweet ui list -->
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            app:cardCornerRadius="0dp"
-            app:cardElevation="6dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Related Tweets"
-                android:textColor="@color/colorPrimary"
+                android:text="Top Trending Tweets for this News"
+                android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="16sp"
-                android:textAlignment="center"
+                android:textSize="14sp"
                 android:layout_margin="4dp"
 
                 />
 
-        </android.support.v7.widget.CardView>
 
         <LinearLayout
             android:id="@+id/my_tweet_layout"
